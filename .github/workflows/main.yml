@@ -32,4 +32,4 @@ jobs:
           host: 176.135.197.51
           password: ${{ secrets.SSH_PASSWORD }}
           port: 4444
-          script: 'cd /www/wwwroot/projet.transportfeverfrance.tk && ./server_deploy.sh'
+          script: 'cd /home/trainznation/projet.transportfeverfrance.tk && ./server_deploy.sh'
