@@ -15,12 +15,10 @@ use UniSharp\LaravelFilemanager\Lfm;
 */
 
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-Route::group(['prefix' => 'files', 'middleware' => 'auth'], function () {
-    Lfm::routes();
-});
-
 require __DIR__.'/auth.php';
+Route::middleware('auth')->group(function () {
+    Route::get('/', [\App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::group(['prefix' => 'files', 'middleware' => 'auth'], function () {
+        Lfm::routes();
+    });
+});

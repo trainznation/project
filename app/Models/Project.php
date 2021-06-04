@@ -12,6 +12,11 @@ class Project extends Model
     protected $guarded = [];
     protected $dates = ["created_at", "updated_at", "time_start"];
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function tasks()
     {
         return $this->hasMany(ProjectTask::class);
