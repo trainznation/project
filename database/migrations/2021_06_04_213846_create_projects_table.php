@@ -17,6 +17,7 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('title');
             $table->timestamp('time_start')->default(now());
+            $table->string('short_description');
             $table->text('description');
             $table->integer('published')->default(0)->comment('0: Trash|1: Private |2: Public');
             $table->integer('state')->default(0)->comment('0: En cours |1: Terminer |2: Annuler |3: En attente');

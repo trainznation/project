@@ -2,7 +2,7 @@ name: CD
 
 on:
   push:
-    branches: [ production ]
+    branches: [ master ]
 
 jobs:
   laravel-tests:
@@ -41,19 +41,3 @@ jobs:
         run: npm install
       - name: Compile assets for production
         run: npm run production
-
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Deployment
-        uses: appleboy/ssh-action@main
-        with:
-          host: 176.135.197.51
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          username: root
-          script: |
-            cd /home/trainznation/projet.transportfeverfrance.tk
-            git checkout -f
-            git pull
