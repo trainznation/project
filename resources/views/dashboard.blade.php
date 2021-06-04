@@ -13,12 +13,12 @@
                 <div class="card-body p-9">
                     <!--begin::Heading-->
                     <div class="fs-2hx fw-bolder" id="count_project">{{ $user->projects()->count() }}</div>
-                    <div class="fs-4 fw-bold text-gray-400 mb-7">Projets Actuelles</div>
+                    <div class="fs-4 fw-bold text-gray-400 mb-7">Projets Totales</div>
                     <!--end::Heading-->
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-wrap">
                         <!--begin::Chart-->
-                        <div class="d-flex flex-center h-100px w-300px me-9 mb-5">
+                        <div class="d-flex flex-center h-200px w-300px me-9 mb-5">
                             <canvas id="kt_project_list_chart" width="100" height="100" style="display: block; box-sizing: border-box; height: 100px; width: 100px;"></canvas>
                         </div>
                         <!--end::Chart-->
@@ -28,27 +28,27 @@
                             <div class="d-flex fs-6 fw-bold align-items-center mb-3">
                                 <div class="bullet bg-warning me-3"></div>
                                 <div class="text-gray-400">En cours</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $user->projects()->where('state', 0)->count() }}</div>
+                                <div class="ms-auto fw-bolder text-gray-700" id="project_progress" data-count="{{ $user->projects()->where('state', 0)->count() }}">{{ $user->projects()->where('state', 0)->count() }}</div>
                             </div>
                             <!--end::Label-->
                             <!--begin::Label-->
                             <div class="d-flex fs-6 fw-bold align-items-center mb-3">
                                 <div class="bullet bg-success me-3"></div>
                                 <div class="text-gray-400">Terminer</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $user->projects()->where('state', 1)->count() }}</div>
+                                <div class="ms-auto fw-bolder text-gray-700" id="project_finish" data-count="{{ $user->projects()->where('state', 1)->count() }}">{{ $user->projects()->where('state', 1)->count() }}</div>
                             </div>
                             <!--end::Label-->
                             <!--begin::Label-->
                             <div class="d-flex fs-6 fw-bold align-items-center mb-3">
                                 <div class="bullet bg-danger me-3"></div>
                                 <div class="text-gray-400">Annuler</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $user->projects()->where('state', 2)->count() }}</div>
+                                <div class="ms-auto fw-bolder text-gray-700" id="project_trash" data-count="{{ $user->projects()->where('state', 2)->count() }}">{{ $user->projects()->where('state', 2)->count() }}</div>
                             </div>
                             <!--end::Label-->
                             <div class="d-flex fs-6 fw-bold align-items-center">
                                 <div class="bullet bg-info me-3"></div>
                                 <div class="text-gray-400">En attente</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $user->projects()->where('state', 3)->count() }}</div>
+                                <div class="ms-auto fw-bolder text-gray-700" id="project_waiting" data-count="{{ $user->projects()->where('state', 3)->count() }}">{{ $user->projects()->where('state', 3)->count() }}</div>
                             </div>
                         </div>
                         <!--end::Labels-->
@@ -65,23 +65,8 @@
         <h2 class="fs-2 fw-bold my-2">Projets
             <span class="fs-6 text-gray-400 ms-1">par status</span></h2>
         <!--end::Heading-->
-        <!--begin::Controls-->
-        <div class="d-flex flex-wrap my-1">
-            <!--begin::Select wrapper-->
-            <div class="m-0">
-                <!--begin::Select-->
-                <select name="status" data-control="select2" data-hide-search="true" class="form-select form-select-white form-select-sm fw-bolder w-125px">
-                    <option value="in_progress" selected>En cours</option>
-                    <option value="todo">A Faire</option>
-                    <option value="close">Terminer</option>
-                </select>
-                <!--end::Select-->
-            </div>
-            <!--end::Select wrapper-->
-        </div>
-        <!--end::Controls-->
     </div>
-    <div class="row g-6 g-xl-9">
+    <div class="row g-6 g-xl-9" id="showProject">
         <!--begin::Col-->
         @foreach($user->projects()->limit(9)->get() as $project)
             <div class="col-md-6 col-xl-4">
