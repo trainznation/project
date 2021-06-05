@@ -62,8 +62,7 @@
     </div>
     <div class="d-flex flex-wrap flex-stack my-5">
         <!--begin::Heading-->
-        <h2 class="fs-2 fw-bold my-2">Projets
-            <span class="fs-6 text-gray-400 ms-1">par status</span></h2>
+        <h2 class="fs-2 fw-bold my-2">Mes Projets</h2>
         <!--end::Heading-->
     </div>
     <div class="row g-6 g-xl-9" id="showProject">
