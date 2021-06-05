@@ -32,4 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'files'], function () {
         Lfm::routes();
     });
+
+    Route::group(["prefix" => "account"], function () {
+        Route::get('readAllNotification', [\App\Http\Controllers\Account\AccountController::class, 'readAllNotification']);
+    });
 });
