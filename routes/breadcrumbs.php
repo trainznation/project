@@ -9,3 +9,7 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('project', function (BreadcrumbTrail $trail) {
     $trail->push('Mes Projets', route('project.index'));
 });
+Breadcrumbs::for('project_create', function (BreadcrumbTrail $trail) {
+    $trail->push('Mes Projets', route('project.index'));
+    $trail->push("Création d'un projet", route('project.create'));
+});

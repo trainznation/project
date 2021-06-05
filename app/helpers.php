@@ -48,10 +48,10 @@ if (!function_exists('stateProgressStateTask')) {
         $terminate_task = $proj->tasks()->where('state', 1)->count();
         $all_task = $proj->tasks()->count();
 
-        $percent = ($terminate_task / 100 * $all_task) * 100;
-        $percent_format = number_format($percent, 1, '.', '');
+        $percent = ($terminate_task / 100 * $all_task) * 10;
+        $percent_format = number_format($percent, 0, '.', '');
 
-        return '<div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip" title="This project ' . $percent_format . '% completed">
+        return '<div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip" title="Le projet est à ' . $percent_format . '% Compléter">
                         <div class="bg-primary rounded h-4px" role="progressbar" style="width: ' . $percent_format . '%" aria-valuenow="' . $percent . '" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>';
     }

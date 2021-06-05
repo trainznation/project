@@ -62,13 +62,12 @@
     </div>
     <div class="d-flex flex-wrap flex-stack my-5">
         <!--begin::Heading-->
-        <h2 class="fs-2 fw-bold my-2">Projets
-            <span class="fs-6 text-gray-400 ms-1">par status</span></h2>
+        <h2 class="fs-2 fw-bold my-2">Mes Projets</h2>
         <!--end::Heading-->
     </div>
     <div class="row g-6 g-xl-9" id="showProject">
         <!--begin::Col-->
-        @foreach($user->projects()->limit(9)->get() as $project)
+        @foreach($user->projects()->orderBy('time_start', 'asc')->limit(9)->get() as $project)
             <div class="col-md-6 col-xl-4">
             <!--begin::Card-->
             <a href="#" class="card border border-2 border-gray-300 border-hover">

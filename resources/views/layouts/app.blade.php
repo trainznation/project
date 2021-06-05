@@ -7,13 +7,15 @@
     <meta charset="utf-8" />
     <title>{{ env("APP_NAME") }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="media/logos/favicon.ico" />
+    <link rel="shortcut icon" href="/media/logos/favicon.ico" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
-    <link href="plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet" type="text/css" />
     @yield("styles")
     <!--end::Global Stylesheets Bundle-->
 </head>
@@ -36,6 +38,9 @@
                 <div class="post d-flex flex-column-fluid" id="kt_post">
                     <!--begin::Container-->
                     <div id="kt_content_container" class="container-fluid">
+                        <x-success-form class="mb-4" :success="session('success')" />
+                        <x-error-form class="mb-4" :error="session('error')" />
+                        <x-auth-validation-errors class="mb-4" :errors="$errors" />
                         @yield("content")
                     </div>
                     <!--end::Container-->
@@ -69,8 +74,10 @@
 <!--end::Main-->
 <!--begin::Javascript-->
 <!--begin::Global Javascript Bundle(used by all pages)-->
-<script src="plugins/global/plugins.bundle.js"></script>
-<script src="js/scripts.bundle.js"></script>
+<script src="/plugins/global/plugins.bundle.js"></script>
+<script src="/js/scripts.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="/js/app.js"></script>
 <!--end::Global Javascript Bundle-->
 <!--begin::Page Custom Javascript(used by this page)-->
 @yield("scripts")

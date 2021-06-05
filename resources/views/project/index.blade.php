@@ -37,7 +37,7 @@
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                     <!--begin::Add customer-->
-                    <a href="#" class="btn btn-primary">
+                    <a href="{{ route('project.create') }}" class="btn btn-primary">
                         <!--begin::Svg Icon | path: icons/duotone/Navigation/Plus.svg-->
                         <span class="svg-icon svg-icon-2">
 							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
