@@ -51,7 +51,7 @@ if (!function_exists('stateProgressStateTask')) {
         $percent = ($terminate_task / 100 * $all_task) * 100;
         $percent_format = number_format($percent, 1, '.', '');
 
-        return '<div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip" title="This project ' . $percent_format . '% completed">
+        return '<div class="h-4px w-100 bg-light mb-5" data-bs-toggle="tooltip" title="Le projet est à ' . $percent_format . '% Compléter">
                         <div class="bg-primary rounded h-4px" role="progressbar" style="width: ' . $percent_format . '%" aria-valuenow="' . $percent . '" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>';
     }

@@ -68,7 +68,7 @@
     </div>
     <div class="row g-6 g-xl-9" id="showProject">
         <!--begin::Col-->
-        @foreach($user->projects()->limit(9)->get() as $project)
+        @foreach($user->projects()->orderBy('time_start', 'asc')->limit(9)->get() as $project)
             <div class="col-md-6 col-xl-4">
             <!--begin::Card-->
             <a href="#" class="card border border-2 border-gray-300 border-hover">
