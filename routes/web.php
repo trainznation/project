@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(["prefix" => "project"], function () {
         Route::get('/', [\App\Http\Controllers\Project\ProjectController::class, 'index'])->name('project.index');
+        Route::get('create', [\App\Http\Controllers\Project\ProjectController::class, 'create'])->name('project.create');
     });
 
     Route::group(["prefix" => "public"], function () {

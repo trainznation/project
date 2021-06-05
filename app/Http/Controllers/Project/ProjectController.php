@@ -27,4 +27,9 @@ class ProjectController extends Controller
         $projects = auth()->user()->projects();
         return view('project.index', compact('projects'));
     }
+
+    public function create()
+    {
+        return view('project.create');
+    }
 }
