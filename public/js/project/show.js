@@ -13,6 +13,12 @@ var _success = KTUtil.getCssVariableValue("--bs-success");
 
 var gray_200 = KTUtil.getCssVariableValue("--bs-gray-200");
 var gray_500 = KTUtil.getCssVariableValue("--bs-gray-500");
+var kt_modal_users_search_handler = document.querySelector('#kt_modal_users_search_handler');
+var wrapper = kt_modal_users_search_handler.querySelector('[data-kt-search-element="wrapper"]');
+var suggestion = kt_modal_users_search_handler.querySelector('[data-kt-search-element="suggestions"]');
+var results = kt_modal_users_search_handler.querySelector('[data-kt-search-element="results"]');
+var empty = kt_modal_users_search_handler.querySelector('[data-kt-search-element="empty"]');
+var search;
 
 function overviewCHart() {
   $.ajax({
@@ -190,6 +196,43 @@ function overviewCHart() {
   });
 }
 
+function searchUserList() {
+  var searching = function searching(e) {
+    console.log(e);
+    kt_modal_users_search_handler.addEventListener('keyup', function (e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/api/user/searching',
+        method: 'POST',
+        data: {
+          "search": kt_modal_users_search_handler.querySelector('[data-kt-search-element="input"]').value,
+          "project_id": project_overview_chart.dataset.projectId,
+          "user_id": document.querySelector('#kt_body').dataset.userId
+        },
+        success: function success(data) {
+          suggestion.classList.add('d-none');
+          $('[data-kt-search-element="results"]').removeClass('d-none');
+          $('[data-kt-search-element="results"]').html(data.content);
+          console.log(data);
+        },
+        error: function error(err) {
+          console.error(err);
+        }
+      });
+    });
+  };
+
+  var clearSearch = function clearSearch(e) {
+    suggestion.classList.remove('d-none');
+    results.classList.add('d-none');
+    empty.classList.add('d-none');
+  };
+
+  (search = new KTSearch(kt_modal_users_search_handler)).on("kt.search.process", searching);
+  search.on("kt.search.clear", clearSearch);
+}
+
 overviewCHart();
+searchUserList();
 /******/ })()
 ;

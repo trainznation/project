@@ -7,6 +7,13 @@ let success = KTUtil.getCssVariableValue("--bs-success");
 let gray_200 = KTUtil.getCssVariableValue("--bs-gray-200");
 let gray_500 = KTUtil.getCssVariableValue("--bs-gray-500");
 
+let kt_modal_users_search_handler = document.querySelector('#kt_modal_users_search_handler')
+let wrapper = kt_modal_users_search_handler.querySelector('[data-kt-search-element="wrapper"]')
+let suggestion = kt_modal_users_search_handler.querySelector('[data-kt-search-element="suggestions"]')
+let results = kt_modal_users_search_handler.querySelector('[data-kt-search-element="results"]')
+let empty = kt_modal_users_search_handler.querySelector('[data-kt-search-element="empty"]')
+let search;
+
 function overviewCHart() {
     $.ajax({
         url: `/api/project/${project_overview_chart.dataset.projectId}/graphData`,
@@ -182,4 +189,42 @@ function overviewCHart() {
     })
 }
 
+function searchUserList() {
+    let searching = function(e) {
+        console.log(e)
+        kt_modal_users_search_handler.addEventListener('keyup', (e) => {
+            e.preventDefault()
+            $.ajax({
+                url: '/api/user/searching',
+                method: 'POST',
+                data: {
+                    "search": kt_modal_users_search_handler.querySelector('[data-kt-search-element="input"]').value,
+                    "project_id": project_overview_chart.dataset.projectId,
+                    "user_id": document.querySelector('#kt_body').dataset.userId
+                },
+                success: (data) => {
+                    suggestion.classList.add('d-none')
+                    $('[data-kt-search-element="results"]').removeClass('d-none')
+                    $('[data-kt-search-element="results"]').html(data.content)
+                    console.log(data)
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            })
+        })
+    };
+
+    let clearSearch = function(e) {
+        suggestion.classList.remove('d-none');
+        results.classList.add('d-none');
+        empty.classList.add('d-none')
+    };
+
+    (search = new KTSearch(kt_modal_users_search_handler))
+        .on("kt.search.process", searching);
+    search.on("kt.search.clear", clearSearch)
+}
+
 overviewCHart()
+searchUserList()

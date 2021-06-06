@@ -368,6 +368,177 @@
         </div>
         <!--end::Col-->
     </div>
+    <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header pb-0 border-0 justify-content-end">
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                        <span class="svg-icon svg-icon-1">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+									<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+									<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+								</g>
+							</svg>
+						</span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--begin::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y mx-5 mx-xl-18 pt-0 pb-15">
+                    <!--begin::Content-->
+                    <div class="text-center mb-13">
+                        <h1 class="mb-3">Recherche d'utilisateurs</h1>
+                        <div class="text-gray-400 fw-bold fs-5">Inviter des utilisateurs à votre projet</div>
+                    </div>
+                    <!--end::Content-->
+                    <!--begin::Search-->
+                    <div id="kt_modal_users_search_handler" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="inline">
+                        <!--begin::Form-->
+                        <form data-kt-search-element="form" class="w-100 position-relative mb-5" autocomplete="off">
+                            <!--begin::Hidden input(Added to disable form autocomplete)-->
+                            <input type="hidden" />
+                            <!--end::Hidden input-->
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
+                            <span class="svg-icon svg-icon-2 svg-icon-lg-1 svg-icon-gray-500 position-absolute top-50 ms-5 translate-middle-y">
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<rect x="0" y="0" width="24" height="24" />
+										<path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+										<path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+									</g>
+								</svg>
+							</span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Input-->
+                            <input type="text" class="form-control form-control-lg form-control-solid px-15" name="search" value="" placeholder="Recherche par nom, email, etc..." data-kt-search-element="input" />
+                            <!--end::Input-->
+                            <!--begin::Spinner-->
+                            <span class="position-absolute top-50 end-0 translate-middle-y lh-0 d-none me-5" data-kt-search-element="spinner">
+								<span class="spinner-border h-15px w-15px align-middle text-gray-400"></span>
+							</span>
+                            <!--end::Spinner-->
+                            <!--begin::Reset-->
+                            <span class="btn btn-flush btn-active-color-primary position-absolute top-50 end-0 translate-middle-y lh-0 me-5 d-none" data-kt-search-element="clear">
+								<!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+								<span class="svg-icon svg-icon-2 svg-icon-lg-1 me-0">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+										<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+											<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+											<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+										</g>
+									</svg>
+								</span>
+							</span>
+                            <!--end::Reset-->
+                        </form>
+                        <!--end::Form-->
+                        <!--begin::Wrapper-->
+                        <div class="py-5">
+                            <!--begin::Suggestions-->
+                            <div data-kt-search-element="suggestions">
+                                <!--begin::Heading-->
+                                <h3 class="fw-bold mb-5">Recherche récentes:</h3>
+                                <!--end::Heading-->
+                                <!--begin::Users-->
+                                <div class="mh-375px scroll-y me-n7 pe-7">
+                                    @foreach(\App\Models\User::limit(5)->get() as $user)
+                                        <a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
+                                            <!--begin::Avatar-->
+                                            <div class="symbol symbol-35px symbol-circle me-5">
+                                                <div class="symbol-label fs-2 fw-bold text-success">{{ \Illuminate\Support\Str::limit($user->name, 2, '') }}</div>
+                                            </div>
+                                            <!--end::Avatar-->
+                                            <!--begin::Info-->
+                                            <div class="fw-bold">
+                                                <span class="fs-6 text-gray-800 me-2">{{ $user->name }}</span>
+                                                <span class="badge badge-light">{{ $user->email }}</span>
+                                            </div>
+                                            <!--end::Info-->
+                                        </a>
+                                    @endforeach
+                                </div>
+                                <!--end::Users-->
+                            </div>
+                            <!--end::Suggestions-->
+                            <!--begin::Results(add d-none to below element to hide the users list by default)-->
+                            <div data-kt-search-element="results" class="d-none">
+                                <!--begin::Users-->
+                                <div class="mh-375px scroll-y me-n7 pe-7">
+                                    @foreach(\App\Models\User::all() as $user)
+                                    <!--begin::User-->
+                                    <div class="rounded d-flex flex-stack bg-active-lighten p-4" data-user-id="{{ $user->id }}">
+                                        <!--begin::Details-->
+                                        <div class="d-flex align-items-center">
+                                            <!--begin::Checkbox-->
+                                            <label class="form-check form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='{{ $user->id }}']" value="{{ $user->id }}" />
+                                            </label>
+                                            <!--end::Checkbox-->
+                                            <!--begin::Avatar-->
+                                            <div class="symbol symbol-35px symbol-circle">
+                                                <div class="symbol-label fs-2 fw-bold text-success">{{ \Illuminate\Support\Str::limit($user->name, 2, '') }}</div>
+                                            </div>
+                                            <!--end::Avatar-->
+                                            <!--begin::Details-->
+                                            <div class="ms-5">
+                                                <a href="#" class="fs-5 fw-bolder text-gray-900 text-hover-primary mb-2">{{ $user->name }}</a>
+                                                <div class="fw-bold text-gray-400">{{ $user->email }}</div>
+                                            </div>
+                                            <!--end::Details-->
+                                        </div>
+                                        <!--end::Details-->
+                                    </div>
+                                    <!--end::User-->
+                                    <!--begin::Separator-->
+                                    <div class="border-bottom border-gray-300 border-bottom-dashed"></div>
+                                    <!--end::Separator-->
+                                    @endforeach
+                                </div>
+                                <!--end::Users-->
+                                <!--begin::Actions-->
+                                <div class="d-flex flex-center mt-15">
+                                    <button type="reset" id="kt_modal_users_search_reset" data-bs-dismiss="modal" class="btn btn-active-light me-3">Annuler</button>
+                                    <button type="submit" id="kt_modal_users_search_submit" class="btn btn-primary">Ajouter les utilisateurs selectionner</button>
+                                </div>
+                                <!--end::Actions-->
+                            </div>
+                            <!--end::Results-->
+                            <!--begin::Empty-->
+                            <div data-kt-search-element="empty" class="text-center d-none">
+                                <!--begin::Message-->
+                                <div class="fw-bold py-10">
+                                    <div class="text-gray-600 fs-3 mb-2">Aucun utilisateur trouver</div>
+                                    <div class="text-gray-400 fs-6">Essayer avec le nom ou l'adresse mail</div>
+                                </div>
+                                <!--end::Message-->
+                                <!--begin::Illustration-->
+                                <div class="text-center px-5">
+                                    <img src="media/illustrations/alert.png" alt="" class="mw-100 mh-200px" />
+                                </div>
+                                <!--end::Illustration-->
+                            </div>
+                            <!--end::Empty-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Search-->
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
 @endsection
 
 @section("scripts")

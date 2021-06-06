@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
         Route::get('create', [\App\Http\Controllers\Project\ProjectController::class, 'create'])->name('project.create');
         Route::post('create', [\App\Http\Controllers\Project\ProjectController::class, 'store'])->name('project.store');
         Route::get('{project_id}', [\App\Http\Controllers\Project\ProjectController::class, 'show'])->name('project.show');
+        Route::post('{project_id}/addUsers', [\App\Http\Controllers\Project\ProjectController::class, 'addUsers'])->name('project.addUsers');
     });
 
     Route::group(["prefix" => "public"], function () {
