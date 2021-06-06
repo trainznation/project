@@ -3,10 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
+use App\Models\ProjectFile;
 use App\Models\ProjectTask;
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $faker = Factory::create('fr_FR');
         if (env("APP_ENV") == 'local') {
             \App\Models\User::factory(10)->create();
             $users = User::all();
@@ -34,7 +39,22 @@ class DatabaseSeeder extends Seeder
 
                 for ($k = 1; $k < rand(1, $projects->count()); $k++) {
                     ProjectTask::factory()->create([
-                        "project_id" => $k
+                        "project_id" => $k,
+                        "created_at" => now()->subDays(rand(5,430)),
+                        "updated_at" => now()->subDays(rand(5,430))
+                    ]);
+                }
+
+                for($l = 1; $l < rand(1, $projects->count()); $l++) {
+                    $name = "Test File ".$l;
+                    $type = Arr::random(arrayTypeFile(), 1);
+                    ProjectFile::factory()->create([
+                        "name" => $name,
+                        "type" => $type[0],
+                        "project_id" => $l,
+                        "uri" => "/storage/files/projects/".$l."/".Str::slug($name).".".$type[0],
+                        "size" => rand(900,15000000),
+                        "user_id" => rand(1, $users->count())
                     ]);
                 }
             }

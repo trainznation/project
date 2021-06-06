@@ -18,6 +18,8 @@ class CreateProjectFilesTable extends Migration
             $table->string('type');
             $table->string('name');
             $table->string('uri');
+            $table->integer('size');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
             $table->foreignId('project_id')->constrained()->onDelete('cascade')->onUpdate('cascade');

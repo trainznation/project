@@ -3,5 +3,6 @@
     "/js/dashboard.js": "/js/dashboard.js",
     "/js/project/index.js": "/js/project/index.js",
     "/js/project/create.js": "/js/project/create.js",
+    "/js/project/show.js": "/js/project/show.js",
     "/css/app.css": "/css/app.css"
 }
