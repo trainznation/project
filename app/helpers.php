@@ -5,6 +5,127 @@ if (!function_exists('currentRoute')) {
         return Route::currentRouteNamed($route) ? 'active' : '';
     }
 }
+if (!function_exists('typeFile')) {
+    function typeFile($type)
+    {
+        switch ($type) {
+            case '3ds': return '3DS Max File';
+            case '7z': return '7-Zip File';
+            case 'ai': return 'Adobe Illustrator';
+            case 'app': return 'Application';
+            case 'asp': return 'Active Server Page';
+            case 'bat': return 'Batch File';
+            case 'c++': return 'C++ File';
+            case 'csharp': return 'C# File';
+            case 'css': return 'CSS File';
+            case 'csv': return 'CSV File';
+            case 'dat': return 'DATA File';
+            case 'dll': return 'DLL File';
+            case 'doc': return 'Microsoft Word File';
+            case 'docx': return 'New Microsoft Word File';
+            case 'dwg': return '2D-3D Othographique File';
+            case 'eml': return 'Email File';
+            case 'eps': return 'Postscript File';
+            case 'exe': return 'Windows Executable File';
+            case 'flv': return 'Adobe Flash Video File';
+            case 'gif': return 'GIF Image File';
+            case 'html': return 'Web File';
+            case 'ics': return 'iCalendar File';
+            case 'iso': return 'Optical Disc Image File';
+            case 'jar': return 'Java Runtime File';
+            case 'jpeg': return 'JPEG Image File';
+            case 'jpg': return 'JPG Image File';
+            case 'js': return 'Javascript File';
+            case 'log': return 'Log System File';
+            case 'lua': return 'LUA Programming Script File';
+            case 'mdb': return 'Microsoft Access Base File';
+            case 'mov': return 'Quicktime Movie File Based';
+            case 'mp3': return 'Mpeg V3 File';
+            case 'mp4': return 'Mpeg V4 File';
+            case 'obj': return '3D Image Standard File';
+            case 'otf': return 'Police File';
+            case 'pdf': return 'PDF File';
+            case 'php': return 'WebPoscript Language Programming File';
+            case 'png': return 'PNG Image File';
+            case 'ppt': return 'Microsoft Powerpoint File';
+            case 'psd': return 'Adobe Photoshop File';
+            case 'pub': return 'Microsoft Publisher File';
+            case 'rar': return 'Zip Format File';
+            case 'sql': return 'Database File';
+            case 'srt': return 'Subtitle File';
+            case 'svg': return 'Vector Graphic File';
+            case 'tga': return 'Targa Image File';
+            case 'ttf': return 'Police TTF File';
+            case 'txt': return 'Text File';
+            case 'wav': return 'Microsoft Sound Format File';
+            case 'xls': return 'Microsoft Excel File';
+            case 'xlsx': return 'New Microsoft Excel File';
+            case 'xml': return 'Extensible Markup Language File';
+            case 'zip': return 'Winzip File Format';
+            default: return 'Unknown type File';
+        }
+    }
+}
+
+if(!function_exists('arrayTypeFile')) {
+    function arrayTypeFile() {
+        return [
+            "3ds",
+            "7z",
+            "ai",
+            "app",
+            "asp",
+            "bat",
+            "c++",
+            "csharp",
+            "css",
+            "csv",
+            "dat",
+            "dll",
+            "doc",
+            "docx",
+            "dwg",
+            "eml",
+            "eps",
+            "exe",
+            "flv",
+            "gif",
+            "html",
+            "ics",
+            "iso",
+            "jar",
+            "jpeg",
+            "jpg",
+            "js",
+            "log",
+            "lua",
+            "mdb",
+            "mov",
+            "mp3",
+            "mp4",
+            "obj",
+            "otf",
+            "pdf",
+            "php",
+            "png",
+            "ppt",
+            "psd",
+            "pub",
+            "rar",
+            "sql",
+            "srt",
+            "svg",
+            "tga",
+            "ttf",
+            "txt",
+            "wav",
+            "xls",
+            "xlsx",
+            "xml",
+            "zip",
+        ];
+    }
+}
 
 if (!function_exists('stateLabelProject')) {
     function stateLabelProject($state, $text = false)
@@ -57,6 +178,20 @@ if (!function_exists('stateProgressStateTask')) {
     }
 }
 
+if (!function_exists('stateTask')) {
+    function stateTask($state)
+    {
+        switch ($state) {
+            case 0:
+                return 'success';
+            case 1:
+                return 'danger';
+            default;
+                return null;
+        }
+    }
+}
+
 if (!function_exists('statePublishProject')) {
     function statePublishProject($state, $text = false)
     {
@@ -83,5 +218,18 @@ if (!function_exists('statePublishProject')) {
                     return null;
             }
         }
+    }
+}
+
+if(!function_exists('human_filesize')) {
+    function human_filesize($size, $precision = 2) {
+        $units = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+        $step = 1024;
+        $i = 0;
+        while (($size / $step) > 0.9) {
+            $size = $size / $step;
+            $i++;
+        }
+        return round($size, $precision).$units[$i];
     }
 }

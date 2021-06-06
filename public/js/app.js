@@ -3804,6 +3804,16 @@ __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
 __webpack_require__(/*! summernote/src/js/summernote */ "./node_modules/summernote/src/js/summernote.js");
 
+$(".readNotification").on('click', function (e) {
+  e.preventDefault();
+  $.ajax({
+    url: '/account/readAllNotification',
+    error: function error(err) {
+      console.error(err);
+    }
+  });
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

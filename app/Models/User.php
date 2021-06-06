@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProjectConversation::class);
     }
+
+    public function files()
+    {
+        return $this->hasMany(ProjectFile::class);
+    }
 }
