@@ -46,4 +46,10 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', "Erreur lors de la création de projet.<br>{$exception->getMessage()}");
         }
     }
+
+    public function show($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        return view('project.show', compact('project'));
+    }
 }
