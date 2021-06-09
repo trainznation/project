@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Models\Project;
 use App\Models\User;
+use App\Notifications\Project\AddingTaskNotification;
 use App\Notifications\Project\AttachProject;
 use App\Notifications\Project\CreateAuthorNotification;
 use Illuminate\Http\Request;
@@ -16,6 +17,10 @@ class ProjectController extends Controller
      * @var Project
      */
     private $project;
+    /**
+     * @var User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    private $users;
 
     /**
      * ProjectController constructor.
@@ -24,6 +29,7 @@ class ProjectController extends Controller
     public function __construct(Project $project)
     {
         $this->project = $project;
+        $this->users = User::all();
     }
 
     public function index()
@@ -55,6 +61,13 @@ class ProjectController extends Controller
         return view('project.show', compact('project'));
     }
 
+    public function tasks($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        return view('project.tasks', compact('project'));
+    }
+
     public function addUsers(Request $request, $project_id)
     {
         $project = $this->project->newQuery()->find($project_id);
@@ -66,5 +79,25 @@ class ProjectController extends Controller
         }
 
         return redirect()->back()->with('success', "Les utilisateurs ont été ajouter au projet.");
+    }
+
+    public function addTask(Request $request, $project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        try {
+            $task = $project->tasks()->create([
+                "title" => $request->get('title'),
+                "description" => $request->get('description')
+            ]);
+
+            foreach ($this->users as $user) {
+                $user->notify(new AddingTaskNotification($project));
+            }
+
+            return redirect()->back()->with('success', "La Tâche <strong>{$task->title}</strong> pour le projet <strong>{$project->title}</strong> à été ajouter");
+        }catch (\Exception $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 }

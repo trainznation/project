@@ -5,7 +5,7 @@
 @endsection
 
 @section("bread")
-    {{ Breadcrumbs::render('project_show', $project) }}
+    {{ Breadcrumbs::render('project_show_tasks', $project) }}
 @endsection
 
 @section("content")
@@ -44,7 +44,7 @@
                         <!--begin::Actions-->
                         <div class="d-flex mb-4">
                             <a href="#" class="btn btn-sm btn-bg-light btn-active-color-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_users_search">Ajouter utilisateur</a>
-                            <a href="#" class="btn btn-sm btn-primary me-3" data-bs-toggle="modal" data-bs-target="#add_task_modal">Ajouter une tache</a>
+                            <a href="#" class="btn btn-sm btn-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Ajouter une tache</a>
                         </div>
                         <!--end::Actions-->
                     </div>
@@ -126,27 +126,27 @@
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.tasks', $project->id) }}">Tâches</a>
+                        <a class="nav-link text-active-primary me-6" href="pages/projects/targets.html">Tâches</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.files', $project->id) }}">Fichiers</a>
+                        <a class="nav-link text-active-primary me-6" href="pages/projects/budget.html">Fichiers</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.activity', $project->id) }}">Activités</a>
+                        <a class="nav-link text-active-primary me-6" href="pages/projects/users.html">Activités</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.conversations', $project->id) }}">Conversations</a>
+                        <a class="nav-link text-active-primary me-6" href="pages/projects/files.html">Conversations</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.setting', $project->id) }}">Configurations</a>
+                        <a class="nav-link text-active-primary me-6" href="pages/projects/activity.html">Configurations</a>
                     </li>
                     <!--end::Nav item-->
                 </ul>
@@ -538,47 +538,6 @@
             <!--end::Modal content-->
         </div>
         <!--end::Modal dialog-->
-    </div>
-    <div class="modal fade" tabindex="-1" id="add_task_modal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Nouvelle Tâche</h5>
-
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                        <span class="svg-icon svg-icon-2x">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
-                                    <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"/>
-                                    <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000) " x="0" y="7" width="16" height="2" rx="1"/>
-                                </g>
-                            </svg>
-                        </span>
-                    </div>
-                    <!--end::Close-->
-                </div>
-
-                <form action="{{ route('project.addTask', $project->id) }}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-10">
-                            <label for="exampleFormControlInput1" class="required form-label">Titre</label>
-                            <input type="text" class="form-control form-control-solid" placeholder="Titre de la tâche" name="title"/>
-                        </div>
-                        <div class="mb-10">
-                            <label for="exampleFormControlInput1" class="required form-label">Description</label>
-                            <textarea class="form-control form-control-solid editor" name="description"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
-                        <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 @endsection
 

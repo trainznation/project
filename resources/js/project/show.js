@@ -228,3 +228,9 @@ function searchUserList() {
 
 overviewCHart()
 searchUserList()
+
+jQuery(document).ready(function () {
+    $(".editor").summernote({
+        height: 200
+    })
+});
