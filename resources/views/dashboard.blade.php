@@ -70,7 +70,7 @@
         @foreach($user->projects()->orderBy('time_start', 'asc')->limit(9)->get() as $project)
             <div class="col-md-6 col-xl-4">
             <!--begin::Card-->
-            <a href="#" class="card border border-2 border-gray-300 border-hover">
+            <a href="{{ route('project.show', $project->id) }}" class="card border border-2 border-gray-300 border-hover">
                 <!--begin::Card header-->
                 <div class="card-header border-0 pt-9">
                     <!--begin::Card Title-->

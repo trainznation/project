@@ -179,15 +179,26 @@ if (!function_exists('stateProgressStateTask')) {
 }
 
 if (!function_exists('stateTask')) {
-    function stateTask($state)
+    function stateTask($state, $formatting = false)
     {
-        switch ($state) {
-            case 0:
-                return 'success';
-            case 1:
-                return 'danger';
-            default;
-                return null;
+        if($formatting == false) {
+            switch ($state) {
+                case 0:
+                    return 'success';
+                case 1:
+                    return 'danger';
+                default;
+                    return null;
+            }
+        } else {
+            switch ($state) {
+                case 0:
+                    return '<div class="badge badge-light-success">Ouvert</div>';
+                case 1:
+                    return '<div class="badge badge-light-danger">Fermer</div>';
+                default;
+                    return null;
+            }
         }
     }
 }
