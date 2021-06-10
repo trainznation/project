@@ -6,6 +6,28 @@ let empty = kt_modal_users_search_handler.querySelector('[data-kt-search-element
 let content_file = document.querySelector('#content_files')
 let search;
 
+function humanFileSize(bytes, si=false, dp=1) {
+    const thresh = si ? 1000 : 1024;
+
+    if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+
+    const units = si
+        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+    let u = -1;
+    const r = 10**dp;
+
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
+
+
+    return bytes.toFixed(dp) + ' ' + units[u];
+}
+
 function searchUserList() {
     let searching = function(e) {
         console.log(e)
@@ -58,7 +80,7 @@ function initContentFile() {
                                 <a href="/project/${document.querySelector('#project').dataset.projectId}/files/${file.id}/dispatcher" class="text-gray-800 text-hover-primary d-flex flex-column">
                                     <!--begin::Image-->
                                     <div class="symbol symbol-60px mb-6">
-                                        <img src="/storage/core/icons_files/${file.type}.png" alt="" data-toggle="tooltip" title="${file.type}"/>
+                                        <img src="/storage/core/icons_files/${file.type}.png" alt="" data-bs-toggle="popover" title="Fichier ${file.name}" data-bs-html="true" data-bs-content="<strong>Type:</strong> ${file.type} <br><strong>Nom:</strong> ${file.name} <br><strong>Taille:</strong> ${humanFileSize(file.size, true, 2)}"/>
                                     </div>
                                     <!--end::Image-->
                                     <!--begin::Title-->
@@ -75,6 +97,14 @@ function initContentFile() {
                         <!--end::Card-->
                     </div>
                 `
+            })
+
+            content_file.querySelectorAll('.col-12').forEach(item => {
+                item.addEventListener('blur', (e) => {
+                    e.preventDefault()
+                    let popover = new bootstrap.Popover(item)
+                    popover.show()
+                })
             })
         },
         error: (err) => {

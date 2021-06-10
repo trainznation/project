@@ -169,7 +169,8 @@ class ProjectController extends Controller
                 "name" => $file->name,
                 "uri" => $file->uri,
                 "size" => $file->size,
-                "created_at" => $file->created_at->format("d/m/Y"),
+                "created_at" => $file->created_at->format("d/m/Y à H:i"),
+                "id" => $file->id
             ];
         }
 
