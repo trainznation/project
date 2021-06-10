@@ -127,7 +127,10 @@ var KTCustomersList = function () {
         }, {
           orderable: !1,
           targets: 6
-        }]
+        }],
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json'
+        }
       })).on("draw", function () {
         r(), c(), l();
       }), r(), document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {

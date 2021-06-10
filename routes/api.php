@@ -20,6 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(["prefix" => "project"], function () {
     Route::get('{project_id}/graphData', [\App\Http\Controllers\Api\Project\ProjectController::class, 'graphData']);
+    Route::get('{project_id}/task/{task_id}', [\App\Http\Controllers\Api\Project\ProjectController::class, 'getTask'])->name('api.project.task.edit');
+    Route::put('{project_id}/task/{task_id}', [\App\Http\Controllers\Api\Project\ProjectController::class, 'updateTask']);
+    Route::put('{project_id}/task/{task_id}/close', [\App\Http\Controllers\Api\Project\ProjectController::class, 'closeTask'])->name('api.project.task.close');
+    Route::put('{project_id}/task/{task_id}/open', [\App\Http\Controllers\Api\Project\ProjectController::class, 'openTask'])->name('api.project.task.open');
+    Route::delete('{project_id}/task/{task_id}', [\App\Http\Controllers\Api\Project\ProjectController::class, 'deleteTask'])->name('api.project.task.delete');
+
+    Route::get('{project_id}/files', [\App\Http\Controllers\Api\Project\ProjectController::class, 'listFiles']);
 });
 
 Route::group(["prefix" => "user"], function () {

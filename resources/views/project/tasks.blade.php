@@ -1,11 +1,11 @@
 @extends("layouts.app")
 
 @section("styles")
-
+    <link href="/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css"/>
 @endsection
 
 @section("bread")
-    {{ Breadcrumbs::render('project_show', $project) }}
+    {{ Breadcrumbs::render('project_show_tasks', $project) }}
 @endsection
 
 @section("content")
@@ -98,14 +98,14 @@
                                     <span class="symbol-label bg-warning text-inverse-warning fw-bolder">{{ \Illuminate\Support\Str::limit($user->name, 2, '') }}</span>
                                 </div>
                             @endforeach
-                            <!--end::User-->
+                        <!--end::User-->
                             <!--begin::All users-->
                             @if($project->users()->count() > 5)
                                 <a href="#" class="symbol symbol-35px symbol-circle" data-bs-toggle="modal" data-bs-target="#kt_modal_view_users">
                                     <span class="symbol-label bg-dark text-white fs-8 fw-bolder" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Voir tous les utilisateurs">+ {{ $project->users()->count() -5 }}</span>
                                 </a>
-                            @endif
-                            <!--end::All users-->
+                        @endif
+                        <!--end::All users-->
                         </div>
                         <!--end::Users-->
                     </div>
@@ -121,12 +121,12 @@
                 <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.show', $project->id) }}">Générale</a>
+                        <a class="nav-link text-active-primary me-6" href="{{ route('project.show', $project->id) }}">Générale</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.tasks', $project->id) }}">Tâches</a>
+                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.tasks', $project->id) }}">Tâches</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
@@ -156,218 +156,185 @@
         </div>
     </div>
 
-    <div class="card mb-6">
-        <div class="card-body">
-            <i>{{ $project->short_description }}</i><br><br>
-            <p>{!! $project->description !!}</p>
-        </div>
-    </div>
-
-    <div class="row g-6 g-xl-9">
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Summary-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Résumé des tâches</h3>
-                        <div class="fs-6 fw-bold text-gray-400">{{ $project->tasks()->where('state', 0)->count() }} {{ \Illuminate\Support\Str::plural('Tâche', $project->tasks()->where('state', 0)->count()) }} {{ \Illuminate\Support\Str::plural('Ouverte', $project->tasks()->where('state', 0)->count()) }}</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-light btn-sm">Voir les tâches</a>
-                    </div>
-                    <!--end::Card toolbar-->
+    <div class="card">
+        <!--begin::Card header-->
+        <div class="card-header border-0 pt-6">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <!--begin::Search-->
+                <div class="d-flex align-items-center position-relative my-1">
+                    <!--begin::Svg Icon | path: icons/duotone/General/Search.svg-->
+                    <span class="svg-icon svg-icon-1 position-absolute ms-6">
+						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+								<rect x="0" y="0" width="24" height="24" />
+								<path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+								<path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+							</g>
+						</svg>
+					</span>
+                    <!--end::Svg Icon-->
+                    <input type="text" data-kt-subscription-table-filter="search" class="form-control form-control-solid w-250px ps-14" placeholder="Rechercher une tache..." />
                 </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-5">
-                    <!--begin::Wrapper-->
-                    <div class="d-flex flex-wrap">
-                        <!--begin::Chart-->
-                        <div class="position-relative d-flex flex-center h-175px w-175px me-15 mb-7">
-                            <canvas id="project_overview_chart" data-project-id="{{ $project->id }}"></canvas>
-                        </div>
-                        <!--end::Chart-->
-                        <!--begin::Labels-->
-                        <div class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-success me-3"></div>
-                                <div class="text-gray-400">Ouverte</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 0)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-danger me-3"></div>
-                                <div class="text-gray-400">Fermer</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 1)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Labels-->
-                    </div>
-                    <!--end::Wrapper-->
-                </div>
-                <!--end::Card body-->
+                <!--end::Search-->
             </div>
-            <!--end::Summary-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Graph-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Taches dans le temps</h3>
-                        <!--begin::Labels-->
-                        <div class="fs-6 d-flex text-gray-400 fs-6 fw-bold">
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center me-6">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-success"></span>
-								</span>Ouvert
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-primary"></span>
-								</span>Fermer
-                            </div>
-                            <!--end::Label-->
+            <!--begin::Card title-->
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <!--begin::Toolbar-->
+                <div class="d-flex justify-content-end" data-kt-subscription-table-toolbar="base">
+                    <!--begin::Filter-->
+                    <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
+                        <!--begin::Svg Icon | path: icons/duotone/Text/Filter.svg-->
+                        <span class="svg-icon svg-icon-2">
+													<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect x="0" y="0" width="24" height="24" />
+															<path d="M5,4 L19,4 C19.2761424,4 19.5,4.22385763 19.5,4.5 C19.5,4.60818511 19.4649111,4.71345191 19.4,4.8 L14,12 L14,20.190983 C14,20.4671254 13.7761424,20.690983 13.5,20.690983 C13.4223775,20.690983 13.3458209,20.6729105 13.2763932,20.6381966 L10,19 L10,12 L4.6,4.8 C4.43431458,4.5790861 4.4790861,4.26568542 4.7,4.1 C4.78654809,4.03508894 4.89181489,4 5,4 Z" fill="#000000" />
+														</g>
+													</svg>
+												</span>
+                        <!--end::Svg Icon-->Filter</button>
+                    <!--begin::Menu 1-->
+                    <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true">
+                        <!--begin::Header-->
+                        <div class="px-7 py-5">
+                            <div class="fs-5 text-dark fw-bolder">Filter Options</div>
                         </div>
-                        <!--end::Labels-->
+                        <!--end::Header-->
+                        <!--begin::Separator-->
+                        <div class="separator border-gray-200"></div>
+                        <!--end::Separator-->
+                        <!--begin::Content-->
+                        <div class="px-7 py-5" data-kt-subscription-table-filter="form">
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <label class="form-label fs-6 fw-bold">Etat:</label>
+                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-subscription-table-filter="status" data-hide-search="true">
+                                    <option></option>
+                                    <option value="Ouvert">Ouvert</option>
+                                    <option value="Fermer">Fermer</option>
+                                </select>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Actions-->
+                            <div class="d-flex justify-content-end">
+                                <button type="reset" class="btn btn-white btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-subscription-table-filter="reset">Reset</button>
+                                <button type="submit" class="btn btn-primary fw-bold px-6" data-kt-menu-dismiss="true" data-kt-subscription-table-filter="filter">Appliquer</button>
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Content-->
                     </div>
-                    <!--end::Card title-->
+                    <!--end::Menu 1-->
+                    <!--end::Filter-->
+                    <!--begin::Add subscription-->
+                    <a data-toggle="modal" href="#add_task_modal" class="btn btn-primary">
+                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Plus.svg-->
+                        <span class="svg-icon svg-icon-2">
+							<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+								<rect fill="#000000" opacity="0.5" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000)" x="4" y="11" width="16" height="2" rx="1" />
+							</svg>
+						</span>
+                        Ajouter une tache
+                    </a>
+                    <!--end::Add subscription-->
                 </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body pt-10 pb-0 px-5">
-                    <!--begin::Chart-->
-                    <div id="kt_project_overview_graph" class="card-rounded-bottom" style="height: 300px"></div>
-                    <!--end::Chart-->
-                </div>
-                <!--end::Card body-->
+                <!--end::Toolbar-->
             </div>
-            <!--end::Graph-->
+            <!--end::Card toolbar-->
         </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Derniers Fichiers</h3>
-                        <div class="fs-6 text-gray-400">{{ $project->files()->count() }} Fichiers Totales, {{ human_filesize($project->files()->sum('size')) }} d'espace utiliser</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-3">
-                    <!--begin::Files-->
-                    <div class="d-flex flex-column mb-9">
-                        @foreach($project->files()->orderBy('created_at', 'desc')->limit(4)->get() as $file)
-                        <!--begin::File-->
-                        <div class="d-flex align-items-center mb-5">
-                            <!--begin::Icon-->
-                            <div class="symbol symbol-30px me-5" data-toggle="tooltip" title="{{ typeFile($file->type) }}">
-                                <img alt="Icon" src="/storage/core/icons_files/{{ $file->type }}.png" />
-                            </div>
-                            <!--end::Icon-->
-                            <!--begin::Details-->
-                            <div class="fw-bold">
-                                <a class="fs-6 fw-bolder text-dark text-hover-primary" href="#">{{ $file->name }}</a>
-                                <div class="text-gray-400">{{ $file->created_at->diffForHumans() }}
-                                    <a href="#">{{ $file->user->name }}</a></div>
-                            </div>
-                            <!--end::Details-->
-                        </div>
-                        <!--end::File-->
-                        @endforeach
-                    </div>
-                    <!--end::Files-->
-                </div>
-                <!--end::Card body -->
-            </div>
-            <!--end::Card-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Tasks-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Dernières Tâches</h3>
-                        <div class="fs-6 text-gray-400">Les 5 dernières tâches ajouter au backlog</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body d-flex flex-column mb-9 p-9 pt-3">
-                    @foreach($project->tasks()->orderBy('created_at', 'desc')->limit(5)->get() as $task)
-                    <!--begin::Item-->
-                    <div class="d-flex align-items-center position-relative mb-7">
-                        <!--begin::Label-->
-                        <div class="position-absolute top-0 start-0 rounded h-100 bg-{{ stateTask($task->state) }} w-4px"></div>
-                        <!--end::Label-->
-                        <!--begin::Checkbox-->
-                        @if($task->state == 0)
-                        <div class="form-check form-check-custom form-check-solid ms-6 me-4">
-                            <input class="form-check-input" type="checkbox" value="" />
-                        </div>
-                        @else
-                            <div class="ms-6 me-4">&nbsp;</div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            <!--begin::Table-->
+            <table class="table align-middle table-row-dashed fs-6 gy-5" id="table_project_task">
+                <!--begin::Table head-->
+                <thead>
+                <!--begin::Table row-->
+                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                    <th class="min-w-125px">Titre</th>
+                    <th class="min-w-125px">Etat</th>
+                    <th class="min-w-125px">Horodatage</th>
+                    <th class="text-end min-w-70px">Actions</th>
+                </tr>
+                <!--end::Table row-->
+                </thead>
+                <!--end::Table head-->
+                <!--begin::Table body-->
+                <tbody class="text-gray-600 fw-bold">
+                @foreach($project->tasks as $task)
+                <tr>
+                    <!--begin::Customer=-->
+                    <td>{{ $task->title }}</td>
+                    <!--end::Customer=-->
+                    <!--begin::Status=-->
+                    <td id="state_task">{!! stateTask($task->state, true) !!}</td>
+                    <!--end::Status=-->
+                    <!--begin::Billing=-->
+                    <td>
+                        <strong>Date de début:</strong> {{ $task->created_at->format("d/m/Y à H:i") }}
+                        @if($task->created_at != $task->updated_at)
+                            <br>
+                            <strong>Date de mise à jour:</strong> {{ $task->updated_at->format("d/m/Y à H:i") }}
                         @endif
-                        <!--end::Checkbox-->
-                        <!--begin::Details-->
-                        <div class="fw-bold">
-                            <a href="#" class="fs-6 fw-bolder text-gray-900 text-hover-primary">{{ $task->title }}</a>
-                            <!--begin::Info-->
-                            @if($task->state == 1)
-                                <div class="text-gray-400">Terminer {{ $task->created_at->diffForHumans() }}</div>
-                            @else
-                                <div class="text-gray-400">Ajouter {{ $task->created_at->diffForHumans() }}</div>
-                            @endif
-
-                            <!--end::Info-->
+                    </td>
+                    <!--end::Billing=-->
+                    <!--begin::Action=-->
+                    <td class="text-end">
+                        <a href="#" class="btn btn-light btn-active-light-primary btn-sm" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">Actions
+                            <!--begin::Svg Icon | path: icons/duotone/Navigation/Angle-down.svg-->
+                            <span class="svg-icon svg-icon-5 m-0">
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<polygon points="0 0 24 0 24 24 0 24" />
+										<path d="M6.70710678,15.7071068 C6.31658249,16.0976311 5.68341751,16.0976311 5.29289322,15.7071068 C4.90236893,15.3165825 4.90236893,14.6834175 5.29289322,14.2928932 L11.2928932,8.29289322 C11.6714722,7.91431428 12.2810586,7.90106866 12.6757246,8.26284586 L18.6757246,13.7628459 C19.0828436,14.1360383 19.1103465,14.7686056 18.7371541,15.1757246 C18.3639617,15.5828436 17.7313944,15.6103465 17.3242754,15.2371541 L12.0300757,10.3841378 L6.70710678,15.7071068 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000003, 11.999999) rotate(-180.000000) translate(-12.000003, -11.999999)" />
+									</g>
+								</svg>
+							</span>
+                            <!--end::Svg Icon-->
+                        </a>
+                        <!--begin::Menu-->
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-200px py-4" data-kt-menu="true">
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a data-action="view" href="{{ route('api.project.task.edit', [$project->id, $task->id]) }}" class="menu-link px-3">Voir la tache</a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a data-action="edit" href="{{ route('api.project.task.edit', [$project->id, $task->id]) }}" class="menu-link px-3">Editer la tache</a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                <a data-action="delete" href="{{ route('api.project.task.delete', [$project->id, $task->id]) }}" class="menu-link px-3">Supprimer la tache</a>
+                            </div>
+                            <!--end::Menu item-->
+                            <!--begin::Menu item-->
+                            <div class="menu-item px-3">
+                                @if($task->state == 0)
+                                    <a data-action="closeTask" href="{{ route('api.project.task.close', [$project->id, $task->id]) }}" data-project-id="{{ $project->id }}" data-task-id="{{ $task->id }}" class="menu-link text-danger px-3">Fermer la tache</a>
+                                @else
+                                    <a data-action="openTask" href="{{ route('api.project.task.open', [$project->id, $task->id]) }}" data-project-id="{{ $project->id }}" data-task-id="{{ $task->id }}" class="menu-link text-success px-3">Ouvrir la tache</a>
+                                @endif
+                            </div>
+                            <!--end::Menu item-->
                         </div>
-                        <!--end::Details-->
-                    </div>
-                    <!--end::Item-->
-                    @endforeach
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Tasks-->
+                        <!--end::Menu-->
+                    </td>
+                    <!--end::Action=-->
+                </tr>
+                @endforeach
+                </tbody>
+                <!--end::Table body-->
+            </table>
+            <!--end::Table-->
         </div>
-        <!--end::Col-->
+        <!--end::Card body-->
     </div>
+
     <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -474,34 +441,34 @@
                             <div data-kt-search-element="results" class="d-none">
                                 <!--begin::Users-->
                                 <div class="mh-375px scroll-y me-n7 pe-7">
-                                    @foreach(\App\Models\User::all() as $user)
+                                @foreach(\App\Models\User::all() as $user)
                                     <!--begin::User-->
-                                    <div class="rounded d-flex flex-stack bg-active-lighten p-4" data-user-id="{{ $user->id }}">
-                                        <!--begin::Details-->
-                                        <div class="d-flex align-items-center">
-                                            <!--begin::Checkbox-->
-                                            <label class="form-check form-check-custom form-check-solid me-5">
-                                                <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='{{ $user->id }}']" value="{{ $user->id }}" />
-                                            </label>
-                                            <!--end::Checkbox-->
-                                            <!--begin::Avatar-->
-                                            <div class="symbol symbol-35px symbol-circle">
-                                                <div class="symbol-label fs-2 fw-bold text-success">{{ \Illuminate\Support\Str::limit($user->name, 2, '') }}</div>
-                                            </div>
-                                            <!--end::Avatar-->
+                                        <div class="rounded d-flex flex-stack bg-active-lighten p-4" data-user-id="{{ $user->id }}">
                                             <!--begin::Details-->
-                                            <div class="ms-5">
-                                                <a href="#" class="fs-5 fw-bolder text-gray-900 text-hover-primary mb-2">{{ $user->name }}</a>
-                                                <div class="fw-bold text-gray-400">{{ $user->email }}</div>
+                                            <div class="d-flex align-items-center">
+                                                <!--begin::Checkbox-->
+                                                <label class="form-check form-check-custom form-check-solid me-5">
+                                                    <input class="form-check-input" type="checkbox" name="users" data-kt-check="true" data-kt-check-target="[data-user-id='{{ $user->id }}']" value="{{ $user->id }}" />
+                                                </label>
+                                                <!--end::Checkbox-->
+                                                <!--begin::Avatar-->
+                                                <div class="symbol symbol-35px symbol-circle">
+                                                    <div class="symbol-label fs-2 fw-bold text-success">{{ \Illuminate\Support\Str::limit($user->name, 2, '') }}</div>
+                                                </div>
+                                                <!--end::Avatar-->
+                                                <!--begin::Details-->
+                                                <div class="ms-5">
+                                                    <a href="#" class="fs-5 fw-bolder text-gray-900 text-hover-primary mb-2">{{ $user->name }}</a>
+                                                    <div class="fw-bold text-gray-400">{{ $user->email }}</div>
+                                                </div>
+                                                <!--end::Details-->
                                             </div>
                                             <!--end::Details-->
                                         </div>
-                                        <!--end::Details-->
-                                    </div>
-                                    <!--end::User-->
-                                    <!--begin::Separator-->
-                                    <div class="border-bottom border-gray-300 border-bottom-dashed"></div>
-                                    <!--end::Separator-->
+                                        <!--end::User-->
+                                        <!--begin::Separator-->
+                                        <div class="border-bottom border-gray-300 border-bottom-dashed"></div>
+                                        <!--end::Separator-->
                                     @endforeach
                                 </div>
                                 <!--end::Users-->
@@ -580,8 +547,78 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" tabindex="-1" id="modal_view_task">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <div class="task-state"></div>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                    <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"/>
+                                    <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000) " x="0" y="7" width="16" height="2" rx="1"/>
+                                </g>
+                            </svg>
+                        </span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="edit_task_modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                    <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"/>
+                                    <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000) " x="0" y="7" width="16" height="2" rx="1"/>
+                                </g>
+                            </svg>
+                        </span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <form id="form-edit-task" method="post">
+                    @csrf
+                    <input type="hidden" name="project_id" value="">
+                    <input type="hidden" name="task_id" value="">
+                    <div class="modal-body">
+                        <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Titre</label>
+                            <input type="text" class="form-control form-control-solid" placeholder="Titre de la tâche" name="title"/>
+                        </div>
+                        <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Description</label>
+                            <textarea class="form-control form-control-solid editor" name="description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" id="btnFormEditTask" class="btn btn-primary">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section("scripts")
-    <script type="text/javascript" src="/js/project/show.js"></script>
+    <script src="/plugins/custom/datatables/datatables.bundle.js"></script>
+    <script type="text/javascript" src="/js/project/show_tasks.js"></script>
 @endsection
