@@ -68,6 +68,13 @@ class ProjectController extends Controller
         return view('project.tasks', compact('project'));
     }
 
+    public function files($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        return view('project.files', compact('project'));
+    }
+
     public function addUsers(Request $request, $project_id)
     {
         $project = $this->project->newQuery()->find($project_id);

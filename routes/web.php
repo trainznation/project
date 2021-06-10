@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
         Route::get('{project_id}/setting', [\App\Http\Controllers\Project\ProjectController::class, 'setting'])->name('project.setting');
         Route::post('{project_id}/addUsers', [\App\Http\Controllers\Project\ProjectController::class, 'addUsers'])->name('project.addUsers');
         Route::post('{project_id}/addTask', [\App\Http\Controllers\Project\ProjectController::class, 'addTask'])->name('project.addTask');
+
+        Route::get('{project_id}/files/{file_id}/dispatcher', [\App\Http\Controllers\Project\ProjectController::class, 'fileDispatcher']);
     });
 
     Route::group(["prefix" => "public"], function () {

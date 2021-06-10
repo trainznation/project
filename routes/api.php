@@ -25,6 +25,8 @@ Route::group(["prefix" => "project"], function () {
     Route::put('{project_id}/task/{task_id}/close', [\App\Http\Controllers\Api\Project\ProjectController::class, 'closeTask'])->name('api.project.task.close');
     Route::put('{project_id}/task/{task_id}/open', [\App\Http\Controllers\Api\Project\ProjectController::class, 'openTask'])->name('api.project.task.open');
     Route::delete('{project_id}/task/{task_id}', [\App\Http\Controllers\Api\Project\ProjectController::class, 'deleteTask'])->name('api.project.task.delete');
+
+    Route::get('{project_id}/files', [\App\Http\Controllers\Api\Project\ProjectController::class, 'listFiles']);
 });
 
 Route::group(["prefix" => "user"], function () {

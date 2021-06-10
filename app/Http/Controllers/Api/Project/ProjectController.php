@@ -157,4 +157,22 @@ class ProjectController extends Controller
             return response()->json($exception->getMessage());
         }
     }
+
+    public function listFiles($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $array = [];
+
+        foreach ($project->files as $file) {
+            $array[] = [
+                "type" => $file->type,
+                "name" => $file->name,
+                "uri" => $file->uri,
+                "size" => $file->size,
+                "created_at" => $file->created_at->format("d/m/Y"),
+            ];
+        }
+
+        return response()->json(["files" => $array]);
+    }
 }
