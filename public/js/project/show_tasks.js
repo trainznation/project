@@ -11,6 +11,7 @@ var empty = kt_modal_users_search_handler.querySelector('[data-kt-search-element
 var search;
 var datatable = $("#table_project_task");
 var table = document.querySelector('#table_project_task');
+var r;
 
 function searchUserList() {
   var searching = function searching(e) {
@@ -48,9 +49,12 @@ function searchUserList() {
   search.on("kt.search.clear", clearSearch);
 }
 
+function filter(table) {}
+
 searchUserList();
 jQuery(document).ready(function () {
-  datatable.DataTable();
+  var r = datatable.DataTable();
+  filter(r);
   table.querySelectorAll('[data-action="view"]').forEach(function (action) {
     action.addEventListener('click', function (e) {
       e.preventDefault();
@@ -172,6 +176,23 @@ jQuery(document).ready(function () {
         }
       });
     });
+  });
+  var t = document.querySelector('[data-kt-subscription-table-filter="form"]'),
+      n = t.querySelector('[data-kt-subscription-table-filter="filter"]'),
+      o = t.querySelector('[data-kt-subscription-table-filter="reset"]'),
+      q = t.querySelectorAll("select");
+  n.addEventListener('click', function () {
+    console.log("N");
+    var t = "";
+    q.forEach(function (e, n) {
+      e.value && "" !== e.value && (0 !== n && (t += " "), t += e.value);
+    }), r.search(t).draw();
+  });
+  o.addEventListener('click', function () {
+    console.log("O");
+    q.forEach(function (t, e) {
+      $(t).val(null).trigger("change");
+    }), r.search("").draw();
   });
   $(".editor").summernote({
     height: 200

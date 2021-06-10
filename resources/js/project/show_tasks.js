@@ -7,6 +7,7 @@ let search;
 
 let datatable = $("#table_project_task")
 let table = document.querySelector('#table_project_task')
+let r;
 
 function searchUserList() {
     let searching = function(e) {
@@ -45,11 +46,16 @@ function searchUserList() {
     search.on("kt.search.clear", clearSearch)
 }
 
+function filter(table) {
+
+}
+
 searchUserList()
 
 jQuery(document).ready(function () {
 
-    datatable.DataTable()
+    let r = datatable.DataTable()
+    filter(r)
 
     table.querySelectorAll('[data-action="view"]').forEach(action => {
         action.addEventListener('click', (e) => {
@@ -178,6 +184,26 @@ jQuery(document).ready(function () {
                 }
             })
         })
+    })
+
+    const t = document.querySelector('[data-kt-subscription-table-filter="form"]'),
+        n = t.querySelector('[data-kt-subscription-table-filter="filter"]'),
+        o = t.querySelector('[data-kt-subscription-table-filter="reset"]'),
+        q = t.querySelectorAll("select");
+
+    n.addEventListener('click', () => {
+        console.log("N")
+        let t = "";
+        q.forEach((e, n) => {
+            e.value && "" !== e.value && (0 !== n && (t += " "), t += e.value)
+        }), r.search(t).draw()
+    })
+
+    o.addEventListener('click', () => {
+        console.log("O")
+        q.forEach((t, e) => {
+            $(t).val(null).trigger("change")
+        }), r.search("").draw()
     })
 
     $(".editor").summernote({
