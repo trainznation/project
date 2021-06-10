@@ -46,16 +46,17 @@ function searchUserList() {
     search.on("kt.search.clear", clearSearch)
 }
 
-function filter(table) {
-
-}
-
 searchUserList()
 
 jQuery(document).ready(function () {
 
-    let r = datatable.DataTable()
-    filter(r)
+    let r = datatable.DataTable({
+        info: !1,
+        order: [],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json'
+        }
+    })
 
     table.querySelectorAll('[data-action="view"]').forEach(action => {
         action.addEventListener('click', (e) => {

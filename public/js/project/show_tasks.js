@@ -49,12 +49,15 @@ function searchUserList() {
   search.on("kt.search.clear", clearSearch);
 }
 
-function filter(table) {}
-
 searchUserList();
 jQuery(document).ready(function () {
-  var r = datatable.DataTable();
-  filter(r);
+  var r = datatable.DataTable({
+    info: !1,
+    order: [],
+    language: {
+      url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/French.json'
+    }
+  });
   table.querySelectorAll('[data-action="view"]').forEach(function (action) {
     action.addEventListener('click', function (e) {
       e.preventDefault();

@@ -47,7 +47,7 @@ class DeleteTaskNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            "icon" => "fas fa-trask-o",
+            "icon" => "fas fa-trask",
             "color" => "danger",
             "title" => "Suppression d'une tache",
             "text" => "La tache <strong>{$this->task->title}</strong> du projet <strong>{$this->project->title}</strong> à été supprimer."
