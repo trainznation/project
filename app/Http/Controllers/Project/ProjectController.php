@@ -91,7 +91,7 @@ class ProjectController extends Controller
                 "description" => $request->get('description')
             ]);
 
-            foreach ($this->users as $user) {
+            foreach ($project->users as $user) {
                 $user->notify(new AddingTaskNotification($project));
             }
 

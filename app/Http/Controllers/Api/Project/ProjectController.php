@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Api\Project;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectTask;
+use App\Models\User;
+use App\Notifications\Project\DeleteTaskNotification;
+use App\Notifications\Project\EditTaskNotification;
+use App\Notifications\Project\StateTaskNotification;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -12,14 +17,20 @@ class ProjectController extends Controller
      * @var Project
      */
     private $project;
+    /**
+     * @var ProjectTask
+     */
+    private $projectTask;
 
     /**
      * ProjectController constructor.
      * @param Project $project
+     * @param ProjectTask $projectTask
      */
-    public function __construct(Project $project)
+    public function __construct(Project $project, ProjectTask $projectTask)
     {
         $this->project = $project;
+        $this->projectTask = $projectTask;
     }
 
     public function graphData($project_id)
@@ -59,5 +70,91 @@ class ProjectController extends Controller
                 ]
             ]
         ]);
+    }
+
+    public function getTask($project_id, $task_id)
+    {
+        $task = $this->projectTask->newQuery()->find($task_id);
+
+        return response()->json($task);
+    }
+
+    public function updateTask(Request $request, $project_id, $task_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $task = $this->projectTask->newQuery()->find($task_id);
+
+        try {
+            $task->update([
+                "title" => $request->get('title'),
+                "description" => $request->get('description'),
+            ]);
+
+            foreach ($project->users as $user) {
+                $user->notify(new EditTaskNotification($project, $task));
+            }
+
+            return response()->json($task);
+        }catch (\Exception $exception) {
+            return response()->json(["error" => "Erreur lors de la mise à jour de la tache", "msg" => $exception->getMessage()]);
+        }
+    }
+
+    public function deleteTask($project_id, $task_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $task = $this->projectTask->newQuery()->find($task_id);
+
+        try {
+            $task->delete();
+
+            foreach ($project->users as $user) {
+                $user->notify(new DeleteTaskNotification($project, $task));
+            }
+
+            return response()->json();
+        }catch (\Exception $exception) {
+            return response()->json($exception->getMessage());
+        }
+    }
+
+    public function closeTask($project_id, $task_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $task = $this->projectTask->newQuery()->find($task_id);
+
+        try {
+            $task->update([
+                "state" => 1
+            ]);
+
+            foreach ($project->users as $user) {
+                $user->notify(new StateTaskNotification($project, $task));
+            }
+
+            return response()->json($task);
+        }catch (\Exception $exception) {
+            return response()->json($exception->getMessage());
+        }
+    }
+
+    public function openTask($project_id, $task_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $task = $this->projectTask->newQuery()->find($task_id);
+
+        try {
+            $task->update([
+                "state" => 0
+            ]);
+
+            foreach ($project->users as $user) {
+                $user->notify(new StateTaskNotification($project, $task));
+            }
+
+            return response()->json($task);
+        }catch (\Exception $exception) {
+            return response()->json($exception->getMessage());
+        }
     }
 }

@@ -4,5 +4,6 @@
     "/js/project/index.js": "/js/project/index.js",
     "/js/project/create.js": "/js/project/create.js",
     "/js/project/show.js": "/js/project/show.js",
+    "/js/project/show_tasks.js": "/js/project/show_tasks.js",
     "/css/app.css": "/css/app.css"
 }
