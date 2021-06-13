@@ -80,7 +80,7 @@ function initContentFile() {
                             <!--begin::Card body-->
                             <div class="card-body d-flex justify-content-center text-center flex-column p-8">
                                 <!--begin::Name-->
-                                <a href="/project/${document.querySelector('#project').dataset.projectId}/files/${file.id}/dispatcher" class="text-gray-800 text-hover-primary d-flex flex-column">
+                                <a href="/project/${document.querySelector('#project').dataset.projectId}/files/${file.id}" class="text-gray-800 text-hover-primary d-flex flex-column">
                                     <!--begin::Image-->
                                     <div class="symbol symbol-60px mb-6">
                                         <img src="/storage/core/icons_files/${file.type}.png" alt="" data-bs-toggle="popover" title="Fichier ${file.name}" data-bs-html="true" data-bs-content="<strong>Type:</strong> ${file.type} <br><strong>Nom:</strong> ${file.name} <br><strong>Taille:</strong> ${humanFileSize(file.size, true, 2)}"/>
@@ -179,7 +179,7 @@ function searchFilesList() {
                                     <!--begin::Card body-->
                                     <div class="card-body d-flex justify-content-center text-center flex-column p-8">
                                         <!--begin::Name-->
-                                        <a href="/project/${document.querySelector('#project').dataset.projectId}/files/${file.id}/dispatcher" class="text-gray-800 text-hover-primary d-flex flex-column">
+                                        <a href="/project/${document.querySelector('#project').dataset.projectId}/files/${file.id}" class="text-gray-800 text-hover-primary d-flex flex-column">
                                             <!--begin::Image-->
                                             <div class="symbol symbol-60px mb-6">
                                                 <img src="/storage/core/icons_files/${file.type}.png" alt="" data-bs-toggle="popover" title="Fichier ${file.name}" data-bs-html="true" data-bs-content="<strong>Type:</strong> ${file.type} <br><strong>Nom:</strong> ${file.name} <br><strong>Taille:</strong> ${humanFileSize(file.size, true, 2)}"/>
