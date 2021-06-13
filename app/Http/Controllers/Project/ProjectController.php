@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Project;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\CreateProjectRequest;
 use App\Models\Project;
+use App\Models\ProjectFile;
 use App\Models\User;
 use App\Notifications\Project\AddingTaskNotification;
 use App\Notifications\Project\AttachProject;
 use App\Notifications\Project\CreateAuthorNotification;
+use App\Notifications\Project\UploadFileNotification;
 use Illuminate\Http\Request;
+use Storage;
 
 class ProjectController extends Controller
 {
@@ -106,5 +109,32 @@ class ProjectController extends Controller
         }catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
+    }
+
+    public function uploadFile(Request $request, $project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        foreach ($request->all() as $file) {
+            $directory = public_path('storage/files/project/'.$project_id.'/'.$file->getClientOriginalName());
+            $file->storeAs('files/project/'.$project_id.'/', $file->getClientOriginalName(), 'public');
+
+            ProjectFile::insert([
+                "type" => $file->extension(),
+                "name" => $file->getClientOriginalName(),
+                "uri" => "/storage/files/project/{$project_id}/{$file->getClientOriginalName()}",
+                "size" => filesize($directory),
+                "user_id" => auth()->user()->id,
+                "project_id" => $project_id,
+                "created_at" => now(),
+                "updated_at" => now()
+            ]);
+        }
+
+        foreach ($this->users as $user) {
+            $user->notify(new UploadFileNotification($project));
+        }
+
+        return response()->json();
     }
 }

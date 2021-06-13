@@ -159,7 +159,7 @@
     <div class="d-flex flex-wrap flex-stack my-5">
         <!--begin::Heading-->
         <h3 class="fw-bolder my-2">Fichier du projet
-            <span class="fs-6 text-gray-400 fw-bold ms-1">+{{ $project->files()->count() }}</span></h3>
+            <span class="fs-6 text-gray-400 fw-bold ms-1">+{{ $project->files()->count() }} Fichiers</span></h3>
         <!--end::Heading-->
         <!--begin::Controls-->
         <div class="d-flex my-2">
@@ -179,7 +179,7 @@
                 <input type="text" id="kt_filter_search" class="form-control form-control-sm form-control-solid bg-white fw-bold fs-7 w-150px ps-9" placeholder="Rechercher un fichier" />
             </div>
             <!--end::Search-->
-            <a href="#" class='btn btn-primary btn-sm fw-bolder'>Gestionnaire de fichiers</a>
+            <button data-bs-toggle="modal" data-bs-target="#upload_file" class='btn btn-primary btn-sm fw-bolder'>Upload de fichier</button>
         </div>
         <!--end::Controls-->
     </div>
@@ -393,6 +393,79 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
                         <button type="submit" class="btn btn-primary">Sauvegarder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="upload_file">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload de fichier</h5>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <span class="svg-icon svg-icon-2x">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                    <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"/>
+                                    <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000) " x="0" y="7" width="16" height="2" rx="1"/>
+                                </g>
+                            </svg>
+                        </span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <form action="#" class="form" method="post">
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <label class="col-lg-2 col-form-label text-lg-right">Fichier à envoyer:</label>
+                            <div class="col-lg-10">
+                                <div class="dropzone dropzone-queue mb-2" id="dropzonejs">
+                                    <div class="dropzone-panel mb-lg-0 mb-2">
+                                        <a class="dropzone-select btn btn-sm btn-primary me-2">Fichier</a>
+                                        <a class="dropzone-upload btn btn-sm btn-light-primary me-2">Tout envoyer</a>
+                                        <a class="dropzone-remove-all btn btn-sm btn-light-primary">Tout supprimer</a>
+                                    </div>
+                                    <div class="dropzone-items wm-200px">
+                                        <div class="dropzone-item" style="display:none">
+                                            <!--begin::File-->
+                                            <div class="dropzone-file">
+                                                <div class="dropzone-filename" title="some_image_file_name.jpg">
+                                                    <span data-dz-name>some_image_file_name.jpg</span>
+                                                    <strong>(<span data-dz-size>340kb</span>)</strong>
+                                                </div>
+
+                                                <div class="dropzone-error" data-dz-errormessage></div>
+                                            </div>
+                                            <!--end::File-->
+
+                                            <!--begin::Progress-->
+                                            <div class="dropzone-progress">
+                                                <div class="progress">
+                                                    <div
+                                                        class="progress-bar bg-primary"
+                                                        role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dz-uploadprogress>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--end::Progress-->
+
+                                            <!--begin::Toolbar-->
+                                            <div class="dropzone-toolbar">
+                                                <span class="dropzone-start"><i class="bi bi-play-fill fs-3"></i></span>
+                                                <span class="dropzone-cancel" data-dz-remove style="display: none;"><i class="bi bi-x fs-3"></i></span>
+                                                <span class="dropzone-delete" data-dz-remove><i class="bi bi-x fs-1"></i></span>
+                                            </div>
+                                            <!--end::Toolbar-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="form-text text-muted">Max file size is 100MB and max number of files is 40.</span>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
