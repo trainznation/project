@@ -210,7 +210,6 @@ function searchFilesList() {
     }
 }
 
-searchUserList()
 initContentFile()
 searchFilesList()
 searchUserList()
