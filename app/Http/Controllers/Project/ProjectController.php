@@ -137,4 +137,9 @@ class ProjectController extends Controller
 
         return response()->json();
     }
+
+    public function fileView($project_id, $file_id)
+    {
+
+    }
 }

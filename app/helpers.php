@@ -203,6 +203,35 @@ if (!function_exists('stateTask')) {
     }
 }
 
+if (!function_exists('priorityTask')) {
+    function priorityTask($state, $formatting = false)
+    {
+        if($formatting == false) {
+            switch ($state) {
+                case 0:
+                    return 'Basse';
+                case 1:
+                    return 'Moyenne';
+                case 2:
+                    return 'Haute';
+                default;
+                    return null;
+            }
+        } else {
+            switch ($state) {
+                case 0:
+                    return '<div class="badge badge-light-primary">Basse</div>';
+                case 1:
+                    return '<div class="badge badge-light-warning">Moyenne</div>';
+                case 2:
+                    return '<div class="badge badge-light-danger">Haute</div>';
+                default;
+                    return null;
+            }
+        }
+    }
+}
+
 if (!function_exists('statePublishProject')) {
     function statePublishProject($state, $text = false)
     {
