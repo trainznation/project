@@ -104,7 +104,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var plyr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! plyr */ "./node_modules/plyr/dist/plyr.min.js");
 /* harmony import */ var plyr__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(plyr__WEBPACK_IMPORTED_MODULE_0__);
 
+var codeEditor = document.querySelector('#codeEditor');
 var player = new (plyr__WEBPACK_IMPORTED_MODULE_0___default())('#player');
+var typeFile = [{
+  "type": "c++",
+  "mode": "text/x-c++src"
+}, {
+  "type": "csharp",
+  "mode": "text/x-objectivec"
+}, {
+  "type": "css",
+  "mode": "text/css"
+}, {
+  "type": "html",
+  "mode": "text/html"
+}, {
+  "type": "js",
+  "mode": "text/javascript"
+}, {
+  "type": "log",
+  "mode": "text/mime"
+}, {
+  "type": "lua",
+  "mode": "text/x-lua"
+}, {
+  "type": "php",
+  "mode": "text/x-httpd-php"
+}, {
+  "type": "sql",
+  "mode": "text/x-sql"
+}, {
+  "type": "txt",
+  "mode": "text/mime"
+}, {
+  "type": "xml",
+  "mode": "text/html"
+}];
+console.log(typeFile);
+CodeMirror.fromTextArea(codeEditor, {
+  lineNumbers: true,
+  matchBrackets: true,
+  tabSize: 2,
+  mode: codeEditor.dataset.type,
+  theme: 'monokai',
+  gutters: ['error']
+});
 })();
 
 /******/ })()

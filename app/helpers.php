@@ -66,6 +66,26 @@ if (!function_exists('typeFile')) {
         }
     }
 }
+if (!function_exists('typeFileMime')) {
+    function typeFileMime($type)
+    {
+        switch ($type) {
+
+            case 'c++': return 'text/x-c++src';
+            case 'csharp': return 'text/x-objectivec';
+            case 'css': return 'text/css';
+            case 'html': return 'text/html';
+            case 'js': return 'text/javascript';
+            case 'log': return 'text/mime';
+            case 'lua': return 'text/x-lua';
+            case 'php': return 'text/x-httpd-php';
+            case 'sql': return 'text/x-sql';
+            case 'txt': return 'text/mime';
+            case 'xml': return 'text/html';
+            default: return 'Unknown type File';
+        }
+    }
+}
 
 if(!function_exists('arrayTypeFile')) {
     function arrayTypeFile() {

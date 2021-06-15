@@ -2,6 +2,7 @@
 
 @section("styles")
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css" />
 @endsection
 
 @section("bread")
@@ -346,7 +347,45 @@
                 </div>
 
                 <div class="tab-pane fade" id="editor" role="tabpanel">
-
+                    @if(file_exists($file->uri) == true)
+                        @if($file->type == 'c++' || $file->type == 'csharp' || $file->type == 'css' || $file->type == 'html' || $file->type == 'js' || $file->type == 'log' || $file->type == 'lua' ||
+                        $file->type == 'php' || $file->type == 'sql' || $file->type == 'txt' || $file->type == 'xml')
+                            <textarea id="codeEditor" data-type="{{ typeFileMime($file->type) }}"></textarea>
+                        @endif
+                    @else
+                        <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotone/Interface/Comment.svg-->
+                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<path opacity="0.25" fill-rule="evenodd" clip-rule="evenodd" d="M5.69477 2.48932C4.00472 2.74648 2.66565 3.98488 2.37546 5.66957C2.17321 6.84372 2 8.33525 2 10C2 11.6647 2.17321 13.1563 2.37546 14.3304C2.62456 15.7766 3.64656 16.8939 5 17.344V20.7476C5 21.5219 5.84211 22.0024 6.50873 21.6085L12.6241 17.9949C14.8384 17.9586 16.8238 17.7361 18.3052 17.5107C19.9953 17.2535 21.3344 16.0151 21.6245 14.3304C21.8268 13.1563 22 11.6647 22 10C22 8.33525 21.8268 6.84372 21.6245 5.66957C21.3344 3.98488 19.9953 2.74648 18.3052 2.48932C16.6859 2.24293 14.4644 2 12 2C9.53559 2 7.31411 2.24293 5.69477 2.48932Z" fill="#191213"></path>
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M7 7C6.44772 7 6 7.44772 6 8C6 8.55228 6.44772 9 7 9H17C17.5523 9 18 8.55228 18 8C18 7.44772 17.5523 7 17 7H7ZM7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11C11.5523 13 12 12.5523 12 12C12 11.4477 11.5523 11 11 11H7Z" fill="#121319"></path>
+								</svg>
+							</span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Content-->
+                            <div class="d-flex flex-column text-light pe-0 pe-sm-10">
+                                <h5 class="mb-1">Erreur de lecture</h5>
+                                <span>Impossible d'accéder au fichier !!</span>
+                            </div>
+                            <!--end::Content-->
+                            <!--begin::Close-->
+                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                                <span class="svg-icon svg-icon-2x svg-icon-light">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+										<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+											<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
+											<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
+										</g>
+									</svg>
+								</span>
+                                <!--end::Svg Icon-->
+                            </button>
+                            <!--end::Close-->
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -600,5 +639,7 @@
 
 @section("scripts")
     <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.11.0/jshint.js"></script>
     <script type="text/javascript" src="/js/project/show_file_view.js"></script>
 @endsection
