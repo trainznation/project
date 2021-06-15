@@ -12,3 +12,14 @@ $(".readNotification").on('click', function (e) {
         }
     })
 })
+
+window.$sleek=[];
+window.SLEEK_PRODUCT_ID=276487884;
+(function(){
+    d=document;
+    s=d.createElement("script");
+    s.src="https://client.sleekplan.com/sdk/e.js";
+    s.async=1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+})();
+
