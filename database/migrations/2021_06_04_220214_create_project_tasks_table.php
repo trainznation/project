@@ -18,6 +18,7 @@ class CreateProjectTasksTable extends Migration
             $table->string('title');
             $table->longText('description');
             $table->integer('state')->default(0)->comment("0: Ouvert |1: Fermer");
+            $table->integer("priority")->default(0)->comment("0: Basse |1: Normal |2: Haute");
             $table->timestamps();
 
             $table->foreignId('project_id')->constrained()->onDelete('cascade')->onUpdate('cascade');

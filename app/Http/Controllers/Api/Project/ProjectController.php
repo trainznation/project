@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Project;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectFile;
 use App\Models\ProjectTask;
 use App\Models\User;
 use App\Notifications\Project\DeleteTaskNotification;
@@ -38,7 +39,7 @@ class ProjectController extends Controller
         $project = $this->project->newQuery()->find($project_id);
 
         return response()->json([
-            "overview" => [$project->tasks()->where('state',0)->count(), $project->tasks()->where('state',1)->count()],
+            "overview" => [$project->tasks()->where('state', 0)->count(), $project->tasks()->where('state', 1)->count()],
             "metric" => [
                 "open" => [
                     $project->tasks()->where('state', 0)->whereBetween('created_at', ['2021-01-01 00:00:00', '2021-01-31 00:00:00'])->count(),
@@ -95,7 +96,7 @@ class ProjectController extends Controller
             }
 
             return response()->json($task);
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json(["error" => "Erreur lors de la mise à jour de la tache", "msg" => $exception->getMessage()]);
         }
     }
@@ -113,7 +114,7 @@ class ProjectController extends Controller
             }
 
             return response()->json();
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }
     }
@@ -133,7 +134,7 @@ class ProjectController extends Controller
             }
 
             return response()->json($task);
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }
     }
@@ -153,7 +154,7 @@ class ProjectController extends Controller
             }
 
             return response()->json($task);
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
         }
     }
@@ -164,6 +165,31 @@ class ProjectController extends Controller
         $array = [];
 
         foreach ($project->files as $file) {
+            $array[] = [
+                "type" => $file->type,
+                "name" => $file->name,
+                "uri" => $file->uri,
+                "size" => $file->size,
+                "created_at" => $file->created_at->format("d/m/Y à H:i"),
+                "id" => $file->id
+            ];
+        }
+
+        return response()->json(["files" => $array]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $project_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function searchFiles(Request $request, $project_id)
+    {
+        //dd($request->all());
+        $project = $this->project->newQuery()->find($project_id)->files()->where('name', 'LIKE', '%'.$request->get('q').'%')->get();
+        $array = [];
+
+        foreach ($project as $file) {
             $array[] = [
                 "type" => $file->type,
                 "name" => $file->name,

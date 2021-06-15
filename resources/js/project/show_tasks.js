@@ -98,6 +98,7 @@ jQuery(document).ready(function () {
                     modal.find('[name="description"]').html(data.description)
                     modal.find('[name="project_id"]').val(data.project_id)
                     modal.find('[name="task_id"]').val(data.id)
+                    modal.find('[name="task_id"]').val(data.id)
                     modal.modal('show')
 
                     modal.find('#form-edit-task').on('submit', (ex) => {

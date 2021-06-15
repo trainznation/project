@@ -570,6 +570,36 @@
                             <label for="exampleFormControlInput1" class="required form-label">Description</label>
                             <textarea class="form-control form-control-solid editor" name="description"></textarea>
                         </div>
+
+                        <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Priorité</label>
+                            <select class="form-select" data-controls="select2" data-placeholder="Selectionner une priorité">
+                                <option value=""></option>
+                                <option value="0">Basse</option>
+                                <option value="1">Moyenne</option>
+                                <option value="2">Haute</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exampleFormControlInput1" class="required form-label">Etat actuelle</label>
+                                <div class="form-check form-check-custom form-check-solid me-10">
+                                    <input class="form-check-input h-30px w-30px" type="radio" value="0" id="flexRadio30" name="status"/>
+                                    <label class="form-check-label" for="flexRadio30">
+                                        Ouvert
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-custom form-check-solid me-10">
+                                    <input class="form-check-input h-30px w-30px" type="radio" value="1" id="flexRadio30" name="status"/>
+                                    <label class="form-check-label" for="flexRadio30">
+                                        Fermer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
