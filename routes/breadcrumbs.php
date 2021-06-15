@@ -32,6 +32,13 @@ Breadcrumbs::for('project_show_files', function (BreadcrumbTrail $trail, $projec
     $trail->push("Gestionnaire de Fichiers", route('project.files', $project->id));
 });
 
+Breadcrumbs::for('project_show_file_view', function (BreadcrumbTrail $trail, $project, $file) {
+    $trail->push('Mes Projets', route('project.index'));
+    $trail->push($project->title, route('project.show', $project->id));
+    $trail->push("Gestionnaire de Fichiers", route('project.files', $project->id));
+    $trail->push("Fichiers", route('project.file.view', [$project->id, $file->id]));
+});
+
 Breadcrumbs::for('project_show_activity', function (BreadcrumbTrail $trail, $project) {
     $trail->push('Mes Projets', route('project.index'));
     $trail->push($project->title, route('project.show', $project->id));

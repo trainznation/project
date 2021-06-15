@@ -64,6 +64,7 @@
         "nouislider": "^14.6.3",
         "npm": "^7.17.0",
         "pdfmake": "^0.1.68",
+        "plyr": "^3.6.8",
         "prism-themes": "^1.5.0",
         "prismjs": "^1.22.0",
         "quill": "^1.3.7",

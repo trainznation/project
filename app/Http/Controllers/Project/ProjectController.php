@@ -140,6 +140,9 @@ class ProjectController extends Controller
 
     public function fileView($project_id, $file_id)
     {
+        $project = $this->project->newQuery()->find($project_id);
+        $file = $project->files()->find($file_id);
 
+        return view('project.file_view', compact('project', 'file'));
     }
 }
