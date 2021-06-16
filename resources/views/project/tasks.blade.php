@@ -217,6 +217,17 @@
                                 </select>
                             </div>
                             <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <label class="form-label fs-6 fw-bold">Priorité:</label>
+                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-subscription-table-filter="priority" data-hide-search="true">
+                                    <option></option>
+                                    <option value="Basse">Basse</option>
+                                    <option value="Moyenne">Moyenne</option>
+                                    <option value="Haute">Haute</option>
+                                </select>
+                            </div>
+                            <!--end::Input group-->
                             <!--begin::Actions-->
                             <div class="d-flex justify-content-end">
                                 <button type="reset" class="btn btn-white btn-active-light-primary fw-bold me-2 px-6" data-kt-menu-dismiss="true" data-kt-subscription-table-filter="reset">Reset</button>
@@ -256,6 +267,7 @@
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Titre</th>
                     <th class="min-w-125px">Etat</th>
+                    <th class="min-w-125px">Priorité</th>
                     <th class="min-w-125px">Horodatage</th>
                     <th class="text-end min-w-70px">Actions</th>
                 </tr>
@@ -272,6 +284,7 @@
                     <!--begin::Status=-->
                     <td id="state_task">{!! stateTask($task->state, true) !!}</td>
                     <!--end::Status=-->
+                    <td id="state_task">{!! priorityTask($task->priority, true) !!}</td>
                     <!--begin::Billing=-->
                     <td>
                         <strong>Date de début:</strong> {{ $task->created_at->format("d/m/Y à H:i") }}
@@ -537,6 +550,36 @@
                             <label for="exampleFormControlInput1" class="required form-label">Description</label>
                             <textarea class="form-control form-control-solid editor" name="description"></textarea>
                         </div>
+
+                        <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Priorité</label>
+                            <select class="form-select" data-controls="select2" data-placeholder="Selectionner une priorité">
+                                <option value=""></option>
+                                <option value="0">Basse</option>
+                                <option value="1">Moyenne</option>
+                                <option value="2">Haute</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="exampleFormControlInput1" class="required form-label">Etat actuelle</label>
+                                <div class="form-check form-check-custom form-check-solid me-10">
+                                    <input class="form-check-input h-30px w-30px" type="radio" value="0" id="flexRadio30" name="status"/>
+                                    <label class="form-check-label" for="flexRadio30">
+                                        Ouvert
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-custom form-check-solid me-10">
+                                    <input class="form-check-input h-30px w-30px" type="radio" value="1" id="flexRadio30" name="status"/>
+                                    <label class="form-check-label" for="flexRadio30">
+                                        Fermer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -606,6 +649,7 @@
                             <label for="exampleFormControlInput1" class="required form-label">Description</label>
                             <textarea class="form-control form-control-solid editor" name="description"></textarea>
                         </div>
+
                     </div>
 
                     <div class="modal-footer">

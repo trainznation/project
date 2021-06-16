@@ -24,7 +24,8 @@ class ProjectTaskFactory extends Factory
         return [
             "title" => $this->faker->sentence(rand(2, 6), true),
             "description" => $this->faker->paragraph(rand(1,2)),
-            "state" => rand(0,1)
+            "state" => rand(0,1),
+            "priority" => rand(0,2)
         ];
     }
 }

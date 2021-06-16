@@ -5,11 +5,11 @@
 @endsection
 
 @section("bread")
-    {{ Breadcrumbs::render('project_show', $project) }}
+    {{ Breadcrumbs::render('project_show_activity', $project) }}
 @endsection
 
 @section("content")
-    <div class="card mb-6 mb-xl-9">
+    <div class="card mb-6 mb-xl-9" id="project" data-project-id="{{ $project->id }}">
         <div class="card-body pt-9 pb-0">
             <!--begin::Details-->
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
@@ -121,7 +121,7 @@
                 <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.show', $project->id) }}">Générale</a>
+                        <a class="nav-link text-active-primary me-6" href="{{ route('project.show', $project->id) }}">Générale</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
@@ -136,7 +136,7 @@
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.activity', $project->id) }}">Activités</a>
+                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.activity', $project->id) }}">Activités</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
@@ -156,218 +156,66 @@
         </div>
     </div>
 
-    <div class="card mb-6">
+    <div class="card">
         <div class="card-body">
-            <i>{{ $project->short_description }}</i><br><br>
-            <p>{!! $project->description !!}</p>
-        </div>
-    </div>
+            @if(count($project->activities) != 0)
+                @foreach($project->activities as $activity)
+                    <div class="d-flex align-items-center mb-7">
+                        <!--begin::Symbol-->
+                        <div class="symbol symbol-50px me-5">
+                        <span class="symbol-label bg-light-success">
+                            <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
+                            <span class="svg-icon svg-icon-2x svg-icon-{{ $activity->data['state'] }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                        <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"></path>
+                                        <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)" x="16.3255682" y="2.94551858" width="3" height="18" rx="1"></rect>
+                                    </g>
+                                </svg>
+                            </span>
+                            <i class="text-{{ $activity->data['state'] }} {{ $activity->data['icon'] }}"></i>
+                            <!--end::Svg Icon-->
+                        </span>
+                        </div>
+                        <!--end::Symbol-->
+                        <!--begin::Text-->
+                        <div class="d-flex flex-column">
+                            <a href="#" class="text-dark text-hover-primary fs-6 fw-bolder">{{ $activity->data['title'] }}</a>
+                            <span class="text-muted fw-bold">{{ $activity->data['desc'] }}</span>
+                        </div>
+                        <!--end::Text-->
+                    </div>
+                @endforeach
+            @else
+                <div class="alert bg-primary d-flex flex-column flex-sm-row p-5 mb-10">
+                    <!--begin::Icon-->
+                    <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24"/>
+                                <path d="M19.5,10.5 L21,10.5 C21.8284271,10.5 22.5,11.1715729 22.5,12 C22.5,12.8284271 21.8284271,13.5 21,13.5 L19.5,13.5 C18.6715729,13.5 18,12.8284271 18,12 C18,11.1715729 18.6715729,10.5 19.5,10.5 Z M16.0606602,5.87132034 L17.1213203,4.81066017 C17.7071068,4.22487373 18.6568542,4.22487373 19.2426407,4.81066017 C19.8284271,5.39644661 19.8284271,6.34619408 19.2426407,6.93198052 L18.1819805,7.99264069 C17.5961941,8.57842712 16.6464466,8.57842712 16.0606602,7.99264069 C15.4748737,7.40685425 15.4748737,6.45710678 16.0606602,5.87132034 Z M16.0606602,18.1819805 C15.4748737,17.5961941 15.4748737,16.6464466 16.0606602,16.0606602 C16.6464466,15.4748737 17.5961941,15.4748737 18.1819805,16.0606602 L19.2426407,17.1213203 C19.8284271,17.7071068 19.8284271,18.6568542 19.2426407,19.2426407 C18.6568542,19.8284271 17.7071068,19.8284271 17.1213203,19.2426407 L16.0606602,18.1819805 Z M3,10.5 L4.5,10.5 C5.32842712,10.5 6,11.1715729 6,12 C6,12.8284271 5.32842712,13.5 4.5,13.5 L3,13.5 C2.17157288,13.5 1.5,12.8284271 1.5,12 C1.5,11.1715729 2.17157288,10.5 3,10.5 Z M12,1.5 C12.8284271,1.5 13.5,2.17157288 13.5,3 L13.5,4.5 C13.5,5.32842712 12.8284271,6 12,6 C11.1715729,6 10.5,5.32842712 10.5,4.5 L10.5,3 C10.5,2.17157288 11.1715729,1.5 12,1.5 Z M12,18 C12.8284271,18 13.5,18.6715729 13.5,19.5 L13.5,21 C13.5,21.8284271 12.8284271,22.5 12,22.5 C11.1715729,22.5 10.5,21.8284271 10.5,21 L10.5,19.5 C10.5,18.6715729 11.1715729,18 12,18 Z M4.81066017,4.81066017 C5.39644661,4.22487373 6.34619408,4.22487373 6.93198052,4.81066017 L7.99264069,5.87132034 C8.57842712,6.45710678 8.57842712,7.40685425 7.99264069,7.99264069 C7.40685425,8.57842712 6.45710678,8.57842712 5.87132034,7.99264069 L4.81066017,6.93198052 C4.22487373,6.34619408 4.22487373,5.39644661 4.81066017,4.81066017 Z M4.81066017,19.2426407 C4.22487373,18.6568542 4.22487373,17.7071068 4.81066017,17.1213203 L5.87132034,16.0606602 C6.45710678,15.4748737 7.40685425,15.4748737 7.99264069,16.0606602 C8.57842712,16.6464466 8.57842712,17.5961941 7.99264069,18.1819805 L6.93198052,19.2426407 C6.34619408,19.8284271 5.39644661,19.8284271 4.81066017,19.2426407 Z" fill="#000000" fill-rule="nonzero" opacity="0.5"/>
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Icon-->
 
-    <div class="row g-6 g-xl-9">
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Summary-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Résumé des tâches</h3>
-                        <div class="fs-6 fw-bold text-gray-400">{{ $project->tasks()->where('state', 0)->count() }} {{ \Illuminate\Support\Str::plural('Tâche', $project->tasks()->where('state', 0)->count()) }} {{ \Illuminate\Support\Str::plural('Ouverte', $project->tasks()->where('state', 0)->count()) }}</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-light btn-sm">Voir les tâches</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-5">
                     <!--begin::Wrapper-->
-                    <div class="d-flex flex-wrap">
-                        <!--begin::Chart-->
-                        <div class="position-relative d-flex flex-center h-175px w-175px me-15 mb-7">
-                            <canvas id="project_overview_chart" data-project-id="{{ $project->id }}"></canvas>
-                        </div>
-                        <!--end::Chart-->
-                        <!--begin::Labels-->
-                        <div class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-success me-3"></div>
-                                <div class="text-gray-400">Ouverte</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 0)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-danger me-3"></div>
-                                <div class="text-gray-400">Fermer</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 1)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Labels-->
+                    <div class="d-flex flex-column text-light pe-0 pe-sm-10">
+                        <!--begin::Title-->
+                        <h5 class="mb-1">Activité de votre projet</h5>
+                        <!--end::Title-->
+                        <!--begin::Content-->
+                        <span>Il n'y a aucune activité sur votre projet actuellement</span>
+                        <!--end::Content-->
                     </div>
                     <!--end::Wrapper-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Summary-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Graph-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Taches dans le temps</h3>
-                        <!--begin::Labels-->
-                        <div class="fs-6 d-flex text-gray-400 fs-6 fw-bold">
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center me-6">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-success"></span>
-								</span>Ouvert
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-primary"></span>
-								</span>Fermer
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Labels-->
-                    </div>
-                    <!--end::Card title-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body pt-10 pb-0 px-5">
-                    <!--begin::Chart-->
-                    <div id="kt_project_overview_graph" class="card-rounded-bottom" style="height: 300px"></div>
-                    <!--end::Chart-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Graph-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Derniers Fichiers</h3>
-                        <div class="fs-6 text-gray-400">{{ $project->files()->count() }} Fichiers Totales, {{ human_filesize($project->files()->sum('size')) }} d'espace utiliser</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-3">
-                    <!--begin::Files-->
-                    <div class="d-flex flex-column mb-9">
-                        @foreach($project->files()->orderBy('created_at', 'desc')->limit(4)->get() as $file)
-                        <!--begin::File-->
-                        <div class="d-flex align-items-center mb-5">
-                            <!--begin::Icon-->
-                            <div class="symbol symbol-30px me-5" data-toggle="tooltip" title="{{ typeFile($file->type) }}">
-                                <img alt="Icon" src="/storage/core/icons_files/{{ $file->type }}.png" />
-                            </div>
-                            <!--end::Icon-->
-                            <!--begin::Details-->
-                            <div class="fw-bold">
-                                <a class="fs-6 fw-bolder text-dark text-hover-primary" href="#">{{ $file->name }}</a>
-                                <div class="text-gray-400">{{ $file->created_at->diffForHumans() }}
-                                    <a href="#">{{ $file->user->name }}</a></div>
-                            </div>
-                            <!--end::Details-->
-                        </div>
-                        <!--end::File-->
-                        @endforeach
-                    </div>
-                    <!--end::Files-->
-                </div>
-                <!--end::Card body -->
-            </div>
-            <!--end::Card-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Tasks-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Dernières Tâches</h3>
-                        <div class="fs-6 text-gray-400">Les 5 dernières tâches ajouter au backlog</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body d-flex flex-column mb-9 p-9 pt-3">
-                    @foreach($project->tasks()->orderBy('created_at', 'desc')->limit(5)->get() as $task)
-                    <!--begin::Item-->
-                    <div class="d-flex align-items-center position-relative mb-7">
-                        <!--begin::Label-->
-                        <div class="position-absolute top-0 start-0 rounded h-100 bg-{{ stateTask($task->state) }} w-4px"></div>
-                        <!--end::Label-->
-                        <!--begin::Checkbox-->
-                        @if($task->state == 0)
-                        <div class="form-check form-check-custom form-check-solid ms-6 me-4">
-                            <input class="form-check-input" type="checkbox" value="" />
-                        </div>
-                        @else
-                            <div class="ms-6 me-4">&nbsp;</div>
-                        @endif
-                        <!--end::Checkbox-->
-                        <!--begin::Details-->
-                        <div class="fw-bold">
-                            <a href="#" class="fs-6 fw-bolder text-gray-900 text-hover-primary">{{ $task->title }}</a>
-                            <!--begin::Info-->
-                            @if($task->state == 1)
-                                <div class="text-gray-400">Terminer {{ $task->created_at->diffForHumans() }}</div>
-                            @else
-                                <div class="text-gray-400">Ajouter {{ $task->created_at->diffForHumans() }}</div>
-                            @endif
 
-                            <!--end::Info-->
-                        </div>
-                        <!--end::Details-->
-                    </div>
-                    <!--end::Item-->
-                    @endforeach
                 </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Tasks-->
+            @endif
         </div>
-        <!--end::Col-->
     </div>
+
     <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -613,5 +461,5 @@
 @endsection
 
 @section("scripts")
-    <script type="text/javascript" src="/js/project/show.js"></script>
+    <script type="text/javascript" src="/js/project/show_files.js"></script>
 @endsection

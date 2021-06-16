@@ -1,9 +1,10 @@
 #!/bin/sh
 
 php artisan down
+git checkout production
 git checkout -f
 git pull
-composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs --no-dev
+composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 php artisan key:generate --no-interaction
 chmod -R 777 storage/ bootstrap/
 php artisan system:clear --no-interaction

@@ -31,4 +31,9 @@ class Project extends Model
     {
         return $this->hasMany(ProjectConversation::class);
     }
+
+    public function activities()
+    {
+        return $this->hasMany(ProjectActivity::class);
+    }
 }

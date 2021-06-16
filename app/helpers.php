@@ -66,6 +66,26 @@ if (!function_exists('typeFile')) {
         }
     }
 }
+if (!function_exists('typeFileMime')) {
+    function typeFileMime($type)
+    {
+        switch ($type) {
+
+            case 'c++': return 'text/x-c++src';
+            case 'csharp': return 'text/x-objectivec';
+            case 'css': return 'text/css';
+            case 'html': return 'text/html';
+            case 'js': return 'text/javascript';
+            case 'log': return 'text/mime';
+            case 'lua': return 'text/x-lua';
+            case 'php': return 'text/x-httpd-php';
+            case 'sql': return 'text/x-sql';
+            case 'txt': return 'text/mime';
+            case 'xml': return 'text/html';
+            default: return 'Unknown type File';
+        }
+    }
+}
 
 if(!function_exists('arrayTypeFile')) {
     function arrayTypeFile() {
@@ -203,6 +223,35 @@ if (!function_exists('stateTask')) {
     }
 }
 
+if (!function_exists('priorityTask')) {
+    function priorityTask($state, $formatting = false)
+    {
+        if($formatting == false) {
+            switch ($state) {
+                case 0:
+                    return 'Basse';
+                case 1:
+                    return 'Moyenne';
+                case 2:
+                    return 'Haute';
+                default;
+                    return null;
+            }
+        } else {
+            switch ($state) {
+                case 0:
+                    return '<div class="badge badge-light-primary">Basse</div>';
+                case 1:
+                    return '<div class="badge badge-light-warning">Moyenne</div>';
+                case 2:
+                    return '<div class="badge badge-light-danger">Haute</div>';
+                default;
+                    return null;
+            }
+        }
+    }
+}
+
 if (!function_exists('statePublishProject')) {
     function statePublishProject($state, $text = false)
     {
@@ -242,5 +291,22 @@ if(!function_exists('human_filesize')) {
             $i++;
         }
         return round($size, $precision).$units[$i];
+    }
+}
+
+if (!function_exists('projectActivityStore')) {
+    function projectActivityStore($project_id, $icon, $title, $desc, $state)
+    {
+        $acti = new \App\Models\ProjectActivity();
+
+        $acti->newQuery()->create([
+            "project_id" => $project_id,
+            "data" => [
+                "icon" => $icon,
+                "title" => $title,
+                "desc" => $desc,
+                "state" => $state
+            ]
+        ]);
     }
 }

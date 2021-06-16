@@ -1,15 +1,16 @@
 @extends("layouts.app")
 
 @section("styles")
-
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.css" />
 @endsection
 
 @section("bread")
-    {{ Breadcrumbs::render('project_show', $project) }}
+    {{ Breadcrumbs::render('project_show_file_view', $project, $file) }}
 @endsection
 
 @section("content")
-    <div class="card mb-6 mb-xl-9">
+    <div class="card mb-6 mb-xl-9" id="project" data-project-id="{{ $project->id }}">
         <div class="card-body pt-9 pb-0">
             <!--begin::Details-->
             <div class="d-flex flex-wrap flex-sm-nowrap mb-6">
@@ -121,7 +122,7 @@
                 <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bolder flex-nowrap">
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.show', $project->id) }}">Générale</a>
+                        <a class="nav-link text-active-primary me-6" href="{{ route('project.show', $project->id) }}">Générale</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
@@ -131,7 +132,7 @@
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
                     <li class="nav-item">
-                        <a class="nav-link text-active-primary me-6" href="{{ route('project.files', $project->id) }}">Fichiers</a>
+                        <a class="nav-link text-active-primary me-6 active" href="{{ route('project.files', $project->id) }}">Fichiers</a>
                     </li>
                     <!--end::Nav item-->
                     <!--begin::Nav item-->
@@ -156,218 +157,244 @@
         </div>
     </div>
 
-    <div class="card mb-6">
+    <div class="card ">
+        <div class="card-header card-header-stretch">
+            <h3 class="card-title">{{ $file->name }}</h3>
+            <div class="card-toolbar">
+                <ul class="nav nav-tabs nav-line-tabs nav-stretch fs-6 border-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#info">Informations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#editor">Editeur</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="card-body">
-            <i>{{ $project->short_description }}</i><br><br>
-            <p>{!! $project->description !!}</p>
-        </div>
-    </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="info" role="tabpanel">
+                    @if($file->type == 'gif' ||
+                    $file->type == 'jpeg' ||
+                    $file->type == 'jpg' ||
+                    $file->type == 'png' ||
+                    $file->type == 'svg' ||
+                    $file->type == 'tga')
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="card" style="width: 18rem;">
+                                @if(file_exists($file->uri) == true)
+                                    <img src="{{ $file->uri }}" class="card-img-top" alt="...">
+                                @else
+                                    <img src="/media/patterns/placeholder.png" class="card-img-top" alt="...">
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <h3>Information sur le fichier</h3>
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold">Nom du fichier</td>
+                                        <td>{{ $file->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Type du fichier</td>
+                                        <td>
+                                            <div class="d-flex align-items-center mb-7">
+                                                <!--begin::Avatar-->
+                                                <div class="symbol symbol-50px me-5">
+                                                    <img src="/storage/core/icons_files/{{ $file->type }}.png" class="" alt="">
+                                                </div>
+                                                <!--end::Avatar-->
+                                                <!--begin::Text-->
+                                                <div class="flex-grow-1">
+                                                    <a href="#" class="text-dark fw-bolder text-hover-primary fs-6">{{ typeFile($file->type) }}</a>
+                                                    <span class="text-muted d-block fw-bold">{{ human_filesize($file->size) }}</span>
+                                                </div>
+                                                <!--end::Text-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Auteur</td>
+                                        <td>{{ $file->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Horodatage</td>
+                                        <td>
+                                            <strong>Date d'upload:</strong> {{ $file->created_at->format("d/m/Y à H:i") }}
+                                            @if($file->created_at != $file->updated_at)
+                                            <br>
+                                            <strong>Date de mise à jour:</strong> {{ $file->udpated_at->format("d/m/Y à H:i") }}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @elseif($file->type == 'flv' ||
+                    $file->type == 'mov' ||
+                    $file->type == 'mp4')
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="card" style="width: 18rem;">
+                                    @if(file_exists($file->uri) == true)
+                                        <video id="player" playsinline controls data-poster="/media/patterns/placeholder.png">
+                                            @if($file->type == 'flv')
+                                                <source src="{{ $file->uri }}" type="video/flv" />
+                                            @endif
+                                            @if($file->type == 'mp4')
+                                                <source src="{{ $file->uri }}" type="video/mp4" />
+                                            @endif
+                                            @if($file->type == 'mov')
+                                                <source src="{{ $file->uri }}" type="video/mov" />
+                                            @endif
+                                        </video>
+                                    @else
+                                        <img src="/media/patterns/placeholder.png" class="card-img-top" alt="...">
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <h3>Information sur le fichier</h3>
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td class="font-bold">Nom du fichier</td>
+                                        <td>{{ $file->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Type du fichier</td>
+                                        <td>
+                                            <div class="d-flex align-items-center mb-7">
+                                                <!--begin::Avatar-->
+                                                <div class="symbol symbol-50px me-5">
+                                                    <img src="/storage/core/icons_files/{{ $file->type }}.png" class="" alt="">
+                                                </div>
+                                                <!--end::Avatar-->
+                                                <!--begin::Text-->
+                                                <div class="flex-grow-1">
+                                                    <a href="#" class="text-dark fw-bolder text-hover-primary fs-6">{{ typeFile($file->type) }}</a>
+                                                    <span class="text-muted d-block fw-bold">{{ human_filesize($file->size) }}</span>
+                                                </div>
+                                                <!--end::Text-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Auteur</td>
+                                        <td>{{ $file->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold">Horodatage</td>
+                                        <td>
+                                            <strong>Date d'upload:</strong> {{ $file->created_at->format("d/m/Y à H:i") }}
+                                            @if($file->created_at != $file->updated_at)
+                                                <br>
+                                                <strong>Date de mise à jour:</strong> {{ $file->udpated_at->format("d/m/Y à H:i") }}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @else
+                        <h3>Information sur le fichier</h3>
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td class="font-bold">Nom du fichier</td>
+                                <td>{{ $file->name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Type du fichier</td>
+                                <td>
+                                    <div class="d-flex align-items-center mb-7">
+                                        <!--begin::Avatar-->
+                                        <div class="symbol symbol-50px me-5">
+                                            <img src="/storage/core/icons_files/{{ $file->type }}.png" class="" alt="">
+                                        </div>
+                                        <!--end::Avatar-->
+                                        <!--begin::Text-->
+                                        <div class="flex-grow-1">
+                                            <a href="#" class="text-dark fw-bolder text-hover-primary fs-6">{{ typeFile($file->type) }}</a>
+                                            <span class="text-muted d-block fw-bold">{{ human_filesize($file->size) }}</span>
+                                        </div>
+                                        <!--end::Text-->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Auteur</td>
+                                <td>{{ $file->user->name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="font-bold">Horodatage</td>
+                                <td>
+                                    <strong>Date d'upload:</strong> {{ $file->created_at->format("d/m/Y à H:i") }}
+                                    @if($file->created_at != $file->updated_at)
+                                        <br>
+                                        <strong>Date de mise à jour:</strong> {{ $file->udpated_at->format("d/m/Y à H:i") }}
+                                    @endif
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
 
-    <div class="row g-6 g-xl-9">
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Summary-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Résumé des tâches</h3>
-                        <div class="fs-6 fw-bold text-gray-400">{{ $project->tasks()->where('state', 0)->count() }} {{ \Illuminate\Support\Str::plural('Tâche', $project->tasks()->where('state', 0)->count()) }} {{ \Illuminate\Support\Str::plural('Ouverte', $project->tasks()->where('state', 0)->count()) }}</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-light btn-sm">Voir les tâches</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-5">
-                    <!--begin::Wrapper-->
-                    <div class="d-flex flex-wrap">
-                        <!--begin::Chart-->
-                        <div class="position-relative d-flex flex-center h-175px w-175px me-15 mb-7">
-                            <canvas id="project_overview_chart" data-project-id="{{ $project->id }}"></canvas>
-                        </div>
-                        <!--end::Chart-->
-                        <!--begin::Labels-->
-                        <div class="d-flex flex-column justify-content-center flex-row-fluid pe-11 mb-5">
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-success me-3"></div>
-                                <div class="text-gray-400">Ouverte</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 0)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex fs-6 fw-bold align-items-center mb-3">
-                                <div class="bullet bg-danger me-3"></div>
-                                <div class="text-gray-400">Fermer</div>
-                                <div class="ms-auto fw-bolder text-gray-700">{{ $project->tasks()->where('state', 1)->count() }}</div>
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Labels-->
-                    </div>
-                    <!--end::Wrapper-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Summary-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Graph-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Taches dans le temps</h3>
-                        <!--begin::Labels-->
-                        <div class="fs-6 d-flex text-gray-400 fs-6 fw-bold">
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center me-6">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-success"></span>
-								</span>Ouvert
-                            </div>
-                            <!--end::Label-->
-                            <!--begin::Label-->
-                            <div class="d-flex align-items-center">
-								<span class="menu-bullet d-flex align-items-center me-2">
-									<span class="bullet bg-primary"></span>
-								</span>Fermer
-                            </div>
-                            <!--end::Label-->
-                        </div>
-                        <!--end::Labels-->
-                    </div>
-                    <!--end::Card title-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body pt-10 pb-0 px-5">
-                    <!--begin::Chart-->
-                    <div id="kt_project_overview_graph" class="card-rounded-bottom" style="height: 300px"></div>
-                    <!--end::Chart-->
-                </div>
-                <!--end::Card body-->
-            </div>
-            <!--end::Graph-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Card-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Derniers Fichiers</h3>
-                        <div class="fs-6 text-gray-400">{{ $project->files()->count() }} Fichiers Totales, {{ human_filesize($project->files()->sum('size')) }} d'espace utiliser</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body p-9 pt-3">
-                    <!--begin::Files-->
-                    <div class="d-flex flex-column mb-9">
-                        @foreach($project->files()->orderBy('created_at', 'desc')->limit(4)->get() as $file)
-                        <!--begin::File-->
-                        <div class="d-flex align-items-center mb-5">
-                            <!--begin::Icon-->
-                            <div class="symbol symbol-30px me-5" data-toggle="tooltip" title="{{ typeFile($file->type) }}">
-                                <img alt="Icon" src="/storage/core/icons_files/{{ $file->type }}.png" />
-                            </div>
-                            <!--end::Icon-->
-                            <!--begin::Details-->
-                            <div class="fw-bold">
-                                <a class="fs-6 fw-bolder text-dark text-hover-primary" href="#">{{ $file->name }}</a>
-                                <div class="text-gray-400">{{ $file->created_at->diffForHumans() }}
-                                    <a href="#">{{ $file->user->name }}</a></div>
-                            </div>
-                            <!--end::Details-->
-                        </div>
-                        <!--end::File-->
-                        @endforeach
-                    </div>
-                    <!--end::Files-->
-                </div>
-                <!--end::Card body -->
-            </div>
-            <!--end::Card-->
-        </div>
-        <!--end::Col-->
-        <!--begin::Col-->
-        <div class="col-lg-6">
-            <!--begin::Tasks-->
-            <div class="card card-flush h-lg-100">
-                <!--begin::Card header-->
-                <div class="card-header mt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title flex-column">
-                        <h3 class="fw-bolder mb-1">Dernières Tâches</h3>
-                        <div class="fs-6 text-gray-400">Les 5 dernières tâches ajouter au backlog</div>
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-                    <div class="card-toolbar">
-                        <a href="#" class="btn btn-bg-light btn-active-color-primary btn-sm">Voir tout</a>
-                    </div>
-                    <!--end::Card toolbar-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body d-flex flex-column mb-9 p-9 pt-3">
-                    @foreach($project->tasks()->orderBy('created_at', 'desc')->limit(5)->get() as $task)
-                    <!--begin::Item-->
-                    <div class="d-flex align-items-center position-relative mb-7">
-                        <!--begin::Label-->
-                        <div class="position-absolute top-0 start-0 rounded h-100 bg-{{ stateTask($task->state) }} w-4px"></div>
-                        <!--end::Label-->
-                        <!--begin::Checkbox-->
-                        @if($task->state == 0)
-                        <div class="form-check form-check-custom form-check-solid ms-6 me-4">
-                            <input class="form-check-input" type="checkbox" value="" />
-                        </div>
-                        @else
-                            <div class="ms-6 me-4">&nbsp;</div>
+                <div class="tab-pane fade" id="editor" role="tabpanel">
+                    @if(file_exists($file->uri) == true)
+                        @if($file->type == 'c++' || $file->type == 'csharp' || $file->type == 'css' || $file->type == 'html' || $file->type == 'js' || $file->type == 'log' || $file->type == 'lua' ||
+                        $file->type == 'php' || $file->type == 'sql' || $file->type == 'txt' || $file->type == 'xml')
+                            <textarea id="codeEditor" data-type="{{ typeFileMime($file->type) }}"></textarea>
+                        @elseif($file->type == 'fbx' || $file->type == 'obj')
+                            <div id="canvas_3d" data-uri-model="{{ $file->uri }}" data-type="{{ $file->type }}"></div>
                         @endif
-                        <!--end::Checkbox-->
-                        <!--begin::Details-->
-                        <div class="fw-bold">
-                            <a href="#" class="fs-6 fw-bolder text-gray-900 text-hover-primary">{{ $task->title }}</a>
-                            <!--begin::Info-->
-                            @if($task->state == 1)
-                                <div class="text-gray-400">Terminer {{ $task->created_at->diffForHumans() }}</div>
-                            @else
-                                <div class="text-gray-400">Ajouter {{ $task->created_at->diffForHumans() }}</div>
-                            @endif
-
-                            <!--end::Info-->
+                    @else
+                        <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row w-100 p-5 mb-10">
+                            <!--begin::Icon-->
+                            <!--begin::Svg Icon | path: icons/duotone/Interface/Comment.svg-->
+                            <span class="svg-icon svg-icon-2hx svg-icon-light me-4 mb-5 mb-sm-0">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<path opacity="0.25" fill-rule="evenodd" clip-rule="evenodd" d="M5.69477 2.48932C4.00472 2.74648 2.66565 3.98488 2.37546 5.66957C2.17321 6.84372 2 8.33525 2 10C2 11.6647 2.17321 13.1563 2.37546 14.3304C2.62456 15.7766 3.64656 16.8939 5 17.344V20.7476C5 21.5219 5.84211 22.0024 6.50873 21.6085L12.6241 17.9949C14.8384 17.9586 16.8238 17.7361 18.3052 17.5107C19.9953 17.2535 21.3344 16.0151 21.6245 14.3304C21.8268 13.1563 22 11.6647 22 10C22 8.33525 21.8268 6.84372 21.6245 5.66957C21.3344 3.98488 19.9953 2.74648 18.3052 2.48932C16.6859 2.24293 14.4644 2 12 2C9.53559 2 7.31411 2.24293 5.69477 2.48932Z" fill="#191213"></path>
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M7 7C6.44772 7 6 7.44772 6 8C6 8.55228 6.44772 9 7 9H17C17.5523 9 18 8.55228 18 8C18 7.44772 17.5523 7 17 7H7ZM7 11C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11C11.5523 13 12 12.5523 12 12C12 11.4477 11.5523 11 11 11H7Z" fill="#121319"></path>
+								</svg>
+							</span>
+                            <!--end::Svg Icon-->
+                            <!--end::Icon-->
+                            <!--begin::Content-->
+                            <div class="d-flex flex-column text-light pe-0 pe-sm-10">
+                                <h5 class="mb-1">Erreur de lecture</h5>
+                                <span>Impossible d'accéder au fichier !!</span>
+                            </div>
+                            <!--end::Content-->
+                            <!--begin::Close-->
+                            <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+                                <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                                <span class="svg-icon svg-icon-2x svg-icon-light">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+										<g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+											<rect fill="#000000" x="0" y="7" width="16" height="2" rx="1"></rect>
+											<rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1"></rect>
+										</g>
+									</svg>
+								</span>
+                                <!--end::Svg Icon-->
+                            </button>
+                            <!--end::Close-->
                         </div>
-                        <!--end::Details-->
-                    </div>
-                    <!--end::Item-->
-                    @endforeach
+                    @endif
                 </div>
-                <!--end::Card body-->
             </div>
-            <!--end::Tasks-->
         </div>
-        <!--end::Col-->
     </div>
+
+    <div class="row g-6 g-xl-9 mb-6 mb-xl-9" id="content_files"></div>
+
     <div class="modal fade" id="kt_modal_users_search" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
@@ -613,5 +640,8 @@
 @endsection
 
 @section("scripts")
-    <script type="text/javascript" src="/js/project/show.js"></script>
+    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.52.2/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.11.0/jshint.js"></script>
+    <script type="text/javascript" src="/js/project/show_file_view.js"></script>
 @endsection
