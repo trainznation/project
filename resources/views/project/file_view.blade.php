@@ -351,6 +351,8 @@
                         @if($file->type == 'c++' || $file->type == 'csharp' || $file->type == 'css' || $file->type == 'html' || $file->type == 'js' || $file->type == 'log' || $file->type == 'lua' ||
                         $file->type == 'php' || $file->type == 'sql' || $file->type == 'txt' || $file->type == 'xml')
                             <textarea id="codeEditor" data-type="{{ typeFileMime($file->type) }}"></textarea>
+                        @elseif($file->type == 'fbx' || $file->type == 'obj')
+                            <div id="canvas_3d" data-uri-model="{{ $file->uri }}" data-type="{{ $file->type }}"></div>
                         @endif
                     @else
                         <div class="alert alert-dismissible bg-danger d-flex flex-column flex-sm-row w-100 p-5 mb-10">
