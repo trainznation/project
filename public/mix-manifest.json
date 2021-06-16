@@ -6,5 +6,6 @@
     "/js/project/show.js": "/js/project/show.js",
     "/js/project/show_tasks.js": "/js/project/show_tasks.js",
     "/js/project/show_files.js": "/js/project/show_files.js",
+    "/js/project/show_file_view.js": "/js/project/show_file_view.js",
     "/css/app.css": "/css/app.css"
 }

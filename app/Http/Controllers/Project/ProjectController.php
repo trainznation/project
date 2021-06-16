@@ -51,6 +51,7 @@ class ProjectController extends Controller
         try {
             $project = $this->project->newQuery()->create($request->except('files'));
             $project->users()->attach(auth()->user());
+            projectActivityStore($project->id, "fas fa-plus", "Nouveau Projet", "Le projet <strong>{$project->title}</strong> à été créer par ".auth()->user()->name, "success");
             auth()->user()->notify(new CreateAuthorNotification($project));
             return redirect()->route('project.index')->with('success', "Le projet {$project->title} à été créer avec succès");
         } catch (\Exception $exception) {
@@ -88,6 +89,8 @@ class ProjectController extends Controller
             $us->notify(new AttachProject($project));
         }
 
+        projectActivityStore($project->id, "fas fa-user-plus", "Ajout de contributeurs au projet", "Un ou plusieurs contributeur ont été ajoutés au projet par ".auth()->user()->name, "success");
+
         return redirect()->back()->with('success', "Les utilisateurs ont été ajouter au projet.");
     }
 
@@ -105,6 +108,7 @@ class ProjectController extends Controller
                 $user->notify(new AddingTaskNotification($project));
             }
 
+            projectActivityStore($project->id, "fas fa-tasks", "Nouvelle tache", "La tache <strong>{$task->title}</strong> à été ajouté au projet par ".auth()->user()->name, "success");
             return redirect()->back()->with('success', "La Tâche <strong>{$task->title}</strong> pour le projet <strong>{$project->title}</strong> à été ajouter");
         }catch (\Exception $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
@@ -135,11 +139,23 @@ class ProjectController extends Controller
             $user->notify(new UploadFileNotification($project));
         }
 
+        projectActivityStore($project->id, "far fa-copy", "Ajout de fichier", "Un ou plusieurs fichiers ont été ajoutés au projet par ".auth()->user()->name, "success");
+
         return response()->json();
     }
 
     public function fileView($project_id, $file_id)
     {
+        $project = $this->project->newQuery()->find($project_id);
+        $file = $project->files()->find($file_id);
 
+        return view('project.file_view', compact('project', 'file'));
+    }
+
+    public function activity($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        return view('project.activity', compact('project'));
     }
 }

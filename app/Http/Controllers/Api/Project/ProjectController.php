@@ -95,6 +95,7 @@ class ProjectController extends Controller
                 $user->notify(new EditTaskNotification($project, $task));
             }
 
+            projectActivityStore($project->id, "fas fa-edit", "Edition d'une tache", "La tache <strong>{$task->title}</strong> à été éditer par ".auth()->user()->name, "success");
             return response()->json($task);
         } catch (\Exception $exception) {
             return response()->json(["error" => "Erreur lors de la mise à jour de la tache", "msg" => $exception->getMessage()]);
@@ -112,6 +113,8 @@ class ProjectController extends Controller
             foreach ($project->users as $user) {
                 $user->notify(new DeleteTaskNotification($project, $task));
             }
+
+            projectActivityStore($project->id, "fas fa-trash", "Suppression d'une tache", "La tache <strong>{$task->title}</strong> à été supprimer par ".auth()->user()->name, "success");
 
             return response()->json();
         } catch (\Exception $exception) {
@@ -133,6 +136,8 @@ class ProjectController extends Controller
                 $user->notify(new StateTaskNotification($project, $task));
             }
 
+            projectActivityStore($project->id, "fas fa-lock", "Cloture d'une tache", "La tache <strong>{$task->title}</strong> à été cloturer par ".auth()->user()->name, "success");
+
             return response()->json($task);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage());
@@ -152,6 +157,8 @@ class ProjectController extends Controller
             foreach ($project->users as $user) {
                 $user->notify(new StateTaskNotification($project, $task));
             }
+
+            projectActivityStore($project->id, "fas fa-lock", "Ouverture d'une tache", "La tache <strong>{$task->title}</strong> à été ouvert par ".auth()->user()->name, "success");
 
             return response()->json($task);
         } catch (\Exception $exception) {

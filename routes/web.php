@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('{project_id}/addUsers', [\App\Http\Controllers\Project\ProjectController::class, 'addUsers'])->name('project.addUsers');
         Route::post('{project_id}/addTask', [\App\Http\Controllers\Project\ProjectController::class, 'addTask'])->name('project.addTask');
 
-        Route::get('{project_id}/files/{file_id}', [\App\Http\Controllers\Project\ProjectController::class, 'fileView']);
+        Route::get('{project_id}/files/{file_id}', [\App\Http\Controllers\Project\ProjectController::class, 'fileView'])->name('project.file.view');
         Route::post('{project_id}/files/upload', [\App\Http\Controllers\Project\ProjectController::class, 'uploadFile']);
     });
 
