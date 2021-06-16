@@ -158,4 +158,11 @@ class ProjectController extends Controller
 
         return view('project.activity', compact('project'));
     }
+
+    public function conversations($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        return view('project.conversations', compact('project'));
+    }
 }
