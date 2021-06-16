@@ -145,4 +145,11 @@ class ProjectController extends Controller
 
         return view('project.file_view', compact('project', 'file'));
     }
+
+    public function activity($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+
+        return view('project.activity', compact('project'));
+    }
 }

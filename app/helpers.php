@@ -293,3 +293,20 @@ if(!function_exists('human_filesize')) {
         return round($size, $precision).$units[$i];
     }
 }
+
+if (!function_exists('projectActivityStore')) {
+    function projectActivityStore($project_id, $icon, $title, $desc, $state)
+    {
+        $acti = new \App\Models\ProjectActivity();
+
+        $acti->newQuery()->create([
+            "project_id" => $project_id,
+            "data" => [
+                "icon" => $icon,
+                "title" => $title,
+                "desc" => $desc,
+                "state" => $state
+            ]
+        ]);
+    }
+}
