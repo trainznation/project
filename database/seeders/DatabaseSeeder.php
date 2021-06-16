@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
         $faker = Factory::create('fr_FR');
         if (env("APP_ENV") == 'local') {
             \App\Models\User::factory(10)->create();
+            User::create([
+                "name" => "Utilisateur Test",
+                "email" => "test@example.com",
+                "password" => "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"
+            ]);
             $users = User::all();
 
             Project::factory(rand(10, 90))->create();
