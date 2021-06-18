@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
+use App\Models\ProjectConversation;
 use App\Models\ProjectFile;
 use App\Models\ProjectTask;
 use App\Models\User;
@@ -42,6 +43,8 @@ class DatabaseSeeder extends Seeder
                     ]);
                 }
 
+                $project_user_count = $project->users()->count();
+
                 for ($k = 1; $k < rand(1, $projects->count()); $k++) {
                     ProjectTask::factory()->create([
                         "project_id" => $k,
@@ -60,6 +63,13 @@ class DatabaseSeeder extends Seeder
                         "uri" => "/storage/files/projects/".$l."/".Str::slug($name).".".$type[0],
                         "size" => rand(900,15000000),
                         "user_id" => rand(1, $users->count())
+                    ]);
+                }
+
+                for ($m = 1; $m < rand(1, $project_user_count); $m++) {
+                    ProjectConversation::factory()->create([
+                        "user_id" => $m,
+                        "project_id" => $project->id
                     ]);
                 }
             }

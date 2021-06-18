@@ -95,7 +95,7 @@ class ProjectController extends Controller
                 $user->notify(new EditTaskNotification($project, $task));
             }
 
-            projectActivityStore($project->id, "fas fa-edit", "Edition d'une tache", "La tache <strong>{$task->title}</strong> à été éditer par ".auth()->user()->name, "success");
+            projectActivityStore($project->id, "fas fa-edit", "Edition d'une tache", "La tache <strong>{$task->title}</strong> à été éditer par " . auth()->user()->name, "success");
             return response()->json($task);
         } catch (\Exception $exception) {
             return response()->json(["error" => "Erreur lors de la mise à jour de la tache", "msg" => $exception->getMessage()]);
@@ -114,7 +114,7 @@ class ProjectController extends Controller
                 $user->notify(new DeleteTaskNotification($project, $task));
             }
 
-            projectActivityStore($project->id, "fas fa-trash", "Suppression d'une tache", "La tache <strong>{$task->title}</strong> à été supprimer par ".auth()->user()->name, "success");
+            projectActivityStore($project->id, "fas fa-trash", "Suppression d'une tache", "La tache <strong>{$task->title}</strong> à été supprimer par " . auth()->user()->name, "success");
 
             return response()->json();
         } catch (\Exception $exception) {
@@ -136,7 +136,7 @@ class ProjectController extends Controller
                 $user->notify(new StateTaskNotification($project, $task));
             }
 
-            projectActivityStore($project->id, "fas fa-lock", "Cloture d'une tache", "La tache <strong>{$task->title}</strong> à été cloturer par ".auth()->user()->name, "success");
+            projectActivityStore($project->id, "fas fa-lock", "Cloture d'une tache", "La tache <strong>{$task->title}</strong> à été cloturer par " . auth()->user()->name, "success");
 
             return response()->json($task);
         } catch (\Exception $exception) {
@@ -158,7 +158,7 @@ class ProjectController extends Controller
                 $user->notify(new StateTaskNotification($project, $task));
             }
 
-            projectActivityStore($project->id, "fas fa-lock", "Ouverture d'une tache", "La tache <strong>{$task->title}</strong> à été ouvert par ".auth()->user()->name, "success");
+            projectActivityStore($project->id, "fas fa-lock", "Ouverture d'une tache", "La tache <strong>{$task->title}</strong> à été ouvert par " . auth()->user()->name, "success");
 
             return response()->json($task);
         } catch (\Exception $exception) {
@@ -193,7 +193,7 @@ class ProjectController extends Controller
     public function searchFiles(Request $request, $project_id)
     {
         //dd($request->all());
-        $project = $this->project->newQuery()->find($project_id)->files()->where('name', 'LIKE', '%'.$request->get('q').'%')->get();
+        $project = $this->project->newQuery()->find($project_id)->files()->where('name', 'LIKE', '%' . $request->get('q') . '%')->get();
         $array = [];
 
         foreach ($project as $file) {
@@ -208,5 +208,40 @@ class ProjectController extends Controller
         }
 
         return response()->json(["files" => $array]);
+    }
+
+    public function getMessages($project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        $arr = [];
+
+        foreach ($project->conversations as $conversation) {
+            $arr[] = [
+                "message" => $conversation->message,
+                "user" => $conversation->user,
+                "date" => $conversation->created_at->longAbsoluteDiffForHumans()
+            ];
+        }
+
+        return response()->json([
+            "data" => $arr
+        ]);
+    }
+
+    public function postMessages(Request $request, $project_id)
+    {
+        $message = $this->project->conversations()->create([
+            "message" => $request->get('message'),
+            "project_id" => $project_id,
+            "user_id" => auth()->user()->id,
+        ]);
+
+        return response()->json([
+            "data" => [
+                "message" => $request->get('message'),
+                "user" => $message->user(),
+                "date" => $message->created_at->longAbsoluteDiffForHumans()
+            ]
+        ]);
     }
 }
