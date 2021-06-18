@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\ProjectConversation;
 use App\Models\ProjectFile;
 use App\Models\ProjectTask;
+use App\Models\ProjectTaskCategory;
 use App\Models\User;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
@@ -32,6 +33,16 @@ class DatabaseSeeder extends Seeder
             ]);
             $users = User::all();
 
+            ProjectTaskCategory::create(["name" => "Documentations"]);
+            ProjectTaskCategory::create(["name" => "3D"]);
+            ProjectTaskCategory::create(["name" => "UV"]);
+            ProjectTaskCategory::create(["name" => "Texture"]);
+            ProjectTaskCategory::create(["name" => "Script"]);
+            ProjectTaskCategory::create(["name" => "Finalisation"]);
+            ProjectTaskCategory::create(["name" => "Communication"]);
+
+            $project_task_category_count = ProjectTaskCategory::all()->count();
+
             Project::factory(rand(10, 90))->create();
 
             $projects = Project::all();
@@ -49,7 +60,8 @@ class DatabaseSeeder extends Seeder
                     ProjectTask::factory()->create([
                         "project_id" => $k,
                         "created_at" => now()->subDays(rand(5,430)),
-                        "updated_at" => now()->subDays(rand(5,430))
+                        "updated_at" => now()->subDays(rand(5,430)),
+                        "project_task_category_id" => rand(1, $project_task_category_count)
                     ]);
                 }
 
