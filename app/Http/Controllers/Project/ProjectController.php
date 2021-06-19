@@ -69,6 +69,8 @@ class ProjectController extends Controller
     {
         $project = $this->project->newQuery()->find($project_id);
 
+        //dd($project->tasks()->get()->load('category'));
+
         return view('project.tasks', compact('project'));
     }
 
@@ -101,7 +103,8 @@ class ProjectController extends Controller
         try {
             $task = $project->tasks()->create([
                 "title" => $request->get('title'),
-                "description" => $request->get('description')
+                "description" => $request->get('description'),
+                "project_task_category_id" => $request->get('project_task_category_id')
             ]);
 
             foreach ($project->users as $user) {

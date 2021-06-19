@@ -77,7 +77,17 @@ class ProjectController extends Controller
     {
         $task = $this->projectTask->newQuery()->find($task_id);
 
-        return response()->json($task);
+        $arr = [
+            "id" => $task->id,
+            "title" => $task->title,
+            "description" => $task->description,
+            "category" => [
+                "name" => $task->category->name,
+                "id" => $task->category->id
+            ]
+        ];
+
+        return response()->json($arr);
     }
 
     public function updateTask(Request $request, $project_id, $task_id)
@@ -89,6 +99,7 @@ class ProjectController extends Controller
             $task->update([
                 "title" => $request->get('title'),
                 "description" => $request->get('description'),
+                "project_task_category_id" => $request->get('project_task_category_id')
             ]);
 
             foreach ($project->users as $user) {
