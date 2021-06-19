@@ -15,4 +15,8 @@ class ProjectTask extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function category() {
+        return $this->belongsTo(ProjectTaskCategory::class, 'project_task_category_id');
+    }
 }

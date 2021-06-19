@@ -29,6 +29,9 @@ Route::group(["prefix" => "project"], function () {
     Route::get('{project_id}/files', [\App\Http\Controllers\Api\Project\ProjectController::class, 'listFiles']);
     Route::post('{project_id}/files/search', [\App\Http\Controllers\Api\Project\ProjectController::class, 'searchFiles']);
     Route::post('{project_id}/files/upload', [\App\Http\Controllers\Api\Project\ProjectController::class, 'uploadFiles']);
+
+    Route::get('{project_id}/messages', [\App\Http\Controllers\Api\Project\ProjectController::class, 'getMessages']);
+    Route::post('{project_id}/messages', [\App\Http\Controllers\Api\Project\ProjectController::class, 'postMessages']);
 });
 
 Route::group(["prefix" => "user"], function () {

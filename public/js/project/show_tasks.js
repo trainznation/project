@@ -77,7 +77,7 @@ jQuery(document).ready(function () {
             }
           };
           modal.find('.task-state').html("<span class=\"badge ".concat(status[data.state]["class"], "\">").concat(status[data.state].text, "</span>"));
-          modal.find('.modal-body').html(data.description);
+          modal.find('.modal-body').html("<p>".concat(data.description, "</p><br /><strong>Cat\xE9gorie:</strong> ").concat(data.category.name));
           modal.modal('show');
         },
         error: function error(err) {
@@ -96,6 +96,7 @@ jQuery(document).ready(function () {
           modal.find('.modal-title').html(data.title);
           modal.find('[name="title"]').val(data.title);
           modal.find('[name="description"]').html(data.description);
+          modal.find('[name="project_task_category_id"]').html("<option value=\"".concat(data.category.id, "\">").concat(data.category.name, "</option>"));
           modal.find('[name="project_id"]').val(data.project_id);
           modal.find('[name="task_id"]').val(data.id);
           modal.find('[name="task_id"]').val(data.id);

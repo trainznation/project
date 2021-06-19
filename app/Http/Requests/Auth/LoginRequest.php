@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -53,6 +54,9 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        User::where('id', Auth::user()->id)->update([
+            "last_seen" => (new \DateTime())->format("Y-m-d H:i:s")
+        ]);
         RateLimiter::clear($this->throttleKey());
     }
 

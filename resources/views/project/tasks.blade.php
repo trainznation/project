@@ -209,6 +209,17 @@
                         <div class="px-7 py-5" data-kt-subscription-table-filter="form">
                             <!--begin::Input group-->
                             <div class="mb-10">
+                                <label class="form-label fs-6 fw-bold">Catégorie:</label>
+                                <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-subscription-table-filter="category" data-hide-search="true">
+                                    <option></option>
+                                    @foreach(\App\Models\ProjectTaskCategory::all() as $category)
+                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="mb-10">
                                 <label class="form-label fs-6 fw-bold">Etat:</label>
                                 <select class="form-select form-select-solid fw-bolder" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-subscription-table-filter="status" data-hide-search="true">
                                     <option></option>
@@ -266,6 +277,7 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Titre</th>
+                    <th class="min-w-125px">Catégorie</th>
                     <th class="min-w-125px">Etat</th>
                     <th class="min-w-125px">Priorité</th>
                     <th class="min-w-125px">Horodatage</th>
@@ -280,6 +292,9 @@
                 <tr>
                     <!--begin::Customer=-->
                     <td>{{ $task->title }}</td>
+                    <!--end::Customer=-->
+                    <!--begin::Customer=-->
+                    <td>{{ $task->category->name }}</td>
                     <!--end::Customer=-->
                     <!--begin::Status=-->
                     <td id="state_task">{!! stateTask($task->state, true) !!}</td>
@@ -547,6 +562,15 @@
                             <input type="text" class="form-control form-control-solid" placeholder="Titre de la tâche" name="title"/>
                         </div>
                         <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Catégorie</label>
+                            <select class="form-select" data-control="select2" data-placeholder="Selectionner une catégorie" name="project_task_category_id">
+                                <option></option>
+                                @foreach(\App\Models\ProjectTaskCategory::all() as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-10">
                             <label for="exampleFormControlInput1" class="required form-label">Description</label>
                             <textarea class="form-control form-control-solid editor" name="description"></textarea>
                         </div>
@@ -644,6 +668,14 @@
                         <div class="mb-10">
                             <label for="exampleFormControlInput1" class="required form-label">Titre</label>
                             <input type="text" class="form-control form-control-solid" placeholder="Titre de la tâche" name="title"/>
+                        </div>
+                        <div class="mb-10">
+                            <label for="exampleFormControlInput1" class="required form-label">Catégorie</label>
+                            <select class="form-select" data-control="select2" data-placeholder="Selectionner une catégorie" name="project_task_category_id">
+                                @foreach(\App\Models\ProjectTaskCategory::all() as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-10">
                             <label for="exampleFormControlInput1" class="required form-label">Description</label>
