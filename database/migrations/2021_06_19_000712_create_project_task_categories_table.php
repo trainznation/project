@@ -19,7 +19,7 @@ class CreateProjectTaskCategoriesTable extends Migration
         });
 
         Schema::table('project_tasks', function (Blueprint $table) {
-            $table->foreignId('project_task_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('project_task_category_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
