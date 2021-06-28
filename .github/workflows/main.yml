@@ -1,4 +1,4 @@
-name: CD
+name: Transport Fever France Project Test in Action
 
 on:
   push:
@@ -41,3 +41,15 @@ jobs:
         run: npm install
       - name: Compile assets for production
         run: npm run production
+
+
+  phpinsight:
+    runs-on: ubuntu-latest
+    name: PHP Insight Test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+      - run: composer install --prefer-dist --no-progress --no-suggest
+      - run: vendor/bin/phpinsights -n --ansi --format=github-action
