@@ -41,3 +41,20 @@ jobs:
         run: npm install
       - name: Compile assets for production
         run: npm run production
+
+  insight-test:
+    name: CI_I_T
+    on:
+      - pull_request
+
+    jobs:
+      phpinsight:
+        runs-on: ubuntu-latest
+        name: PHP Insight Test
+        steps:
+          - uses: actions/checkout@v2
+          - uses: shivammathur/setup-php@v1
+            with:
+              php-version: 7.3
+          - run: composer install --prefer-dist --no-progress --no-suggest
+          - run: vendor/bin/phpinsights -n --ansi --format=github-action
