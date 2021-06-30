@@ -78,6 +78,7 @@
 <script src="/js/scripts.bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="/js/app.js"></script>
+@toastr_render
 <!--end::Global Javascript Bundle-->
 <!--begin::Page Custom Javascript(used by this page)-->
 @yield("scripts")
