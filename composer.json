@@ -19,7 +19,8 @@
         "spatie/laravel-permission": "^4.0",
         "unisharp/laravel-filemanager": "^2.2",
         "yajra/laravel-datatables-buttons": "^4.10",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "yoeunes/toastr": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.9",

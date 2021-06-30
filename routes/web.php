@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('{project_id}/files/{file_id}', [\App\Http\Controllers\Project\ProjectController::class, 'fileView'])->name('project.file.view');
         Route::post('{project_id}/files/upload', [\App\Http\Controllers\Project\ProjectController::class, 'uploadFile']);
+
+        Route::put('{project_id}', [\App\Http\Controllers\Project\ProjectController::class, 'update'])->name('project.update');
     });
 
     Route::group(["prefix" => "public"], function () {
