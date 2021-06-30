@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::post('{project_id}/files/upload', [\App\Http\Controllers\Project\ProjectController::class, 'uploadFile']);
 
         Route::put('{project_id}', [\App\Http\Controllers\Project\ProjectController::class, 'update'])->name('project.update');
+        Route::delete('{project_id}', [\App\Http\Controllers\Project\ProjectController::class, 'delete'])->name('project.delete');
     });
 
     Route::group(["prefix" => "public"], function () {

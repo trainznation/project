@@ -192,4 +192,23 @@ class ProjectController extends Controller
             return redirect()->back();
         }
     }
+
+    public function delete(Request $request, $project_id)
+    {
+        $project = $this->project->newQuery()->find($project_id);
+        if ($project->title == $request->get('title')) {
+            try {
+                $project->delete();
+
+                toastr()->success("Le projet à été supprimer avec succès");
+                return redirect()->route('project.index');
+            } catch (\Exception $exception) {
+                toastr()->error($exception->getMessage());
+                return redirect()->back();
+            }
+        } else {
+            toastr()->warning("L'autorisation de suppression à échoué, veuillez réessayer !");
+            return redirect()->back();
+        }
+    }
 }
