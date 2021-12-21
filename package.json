@@ -76,7 +76,7 @@
         "sweetalert2": "^10.10.0",
         "three": "^0.129.0",
         "tiny-slider": "^2.9.3",
-        "tinymce": "^5.8.2",
+        "tinymce": "^5.10.0",
         "toastr": "^2.1.4",
         "typed.js": "^2.0.12",
         "wnumb": "^1.1.0"
