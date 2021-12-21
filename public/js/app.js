@@ -3855,7 +3855,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__.default({
   broadcaster: larasocket_js__WEBPACK_IMPORTED_MODULE_1__.default,
-  token: "1636|39Zbtt7faECa1UuOqvUBFkAIHdiIUDu5zs5RyIKY"
+  token: ""
 }); // window.Pusher = require('pusher-js');
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
